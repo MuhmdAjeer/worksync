@@ -1,11 +1,8 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Request } from 'express';
+import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class AppService {
-  private readonly logger = new Logger(AppService.name);
-  getHello(request: Request): string {
-    this.logger.log(JSON.stringify(request.session));
+  getHello(): string {
     return 'Hello World!';
   }
 }

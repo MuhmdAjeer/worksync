@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth.module';
@@ -7,7 +7,6 @@ import config from '../mikro-orm.config';
 import { User } from './entities/User';
 import { NatsModule } from './modules/nats.module';
 import { SessionModule } from './modules/session.module';
-import { SessionMiddleware } from './middlewares/session';
 
 @Module({
   imports: [
@@ -20,9 +19,4 @@ import { SessionMiddleware } from './middlewares/session';
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {
-  configure(consumer: MiddlewareConsumer) {
-    // Apply session middleware to specific routes
-    consumer.apply(SessionMiddleware).forRoutes('*');
-  }
-}
+export class AppModule {}
