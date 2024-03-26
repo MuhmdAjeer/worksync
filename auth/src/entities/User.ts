@@ -5,7 +5,6 @@ import {
   EntityRepositoryType,
   PrimaryKey,
   Property,
-  Unique,
 } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import * as bcrypt from 'bcrypt';
@@ -32,8 +31,7 @@ export class User {
   @BeforeUpdate()
   async hashPassword() {
     if (this.password) {
-      const saltRounds = 10;
-      this.password = await bcrypt.hash(this.password, saltRounds);
+      this.password = hashPassword(this.password);
     }
   }
   constructor(user: {
