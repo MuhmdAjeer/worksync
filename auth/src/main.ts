@@ -1,17 +1,18 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as session from 'express-session';
-import { ValidationPipe } from '@nestjs/common';
-import { Logger } from 'nestjs-pino';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import {
   UniqueConstraintExceptionFilter,
   AllExceptionsFilter,
   HttpExceptionFilter,
 } from './exceptionFilters/index';
+import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, { logger: new Logger() });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
+  app.use(cookieParser());
   app.use(
     session({
       secret: 'my-secret',
@@ -24,8 +25,7 @@ async function bootstrap() {
     new HttpExceptionFilter(),
     new UniqueConstraintExceptionFilter(),
   );
-  const logger = app.get(Logger);
-  app.useLogger(logger);
+
   await app.listen(3000);
 }
 bootstrap();

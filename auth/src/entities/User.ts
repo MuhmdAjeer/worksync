@@ -42,7 +42,7 @@ export class User {
   }) {
     this.username = user.username;
     this.email = user.email;
-    this.password = hashPassword(user.password);
+    this.password = user.password;
     this.google_id = user.google_id;
   }
 }

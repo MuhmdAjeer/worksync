@@ -15,6 +15,12 @@ spec:
       containers:
         - name: auth
           image: muhmdajeer/auth
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwtsecret
+                  key: JWT_KEY
           ports:
             - containerPort: 3000
               protocol: TCP
