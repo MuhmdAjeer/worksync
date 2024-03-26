@@ -42,4 +42,10 @@ export class AuthController {
 
     return { success: true };
   }
+
+  @Post('/logout')
+  logout(@Res({ passthrough: true }) response: Response) {
+    response.cookie('jwt', null);
+    return { success: true };
+  }
 }
