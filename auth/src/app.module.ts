@@ -7,6 +7,7 @@ import config from '../mikro-orm.config';
 import { User } from './entities/User';
 import { NatsModule } from './modules/nats.module';
 import { SessionModule } from './modules/session.module';
+import { LoggerModule } from 'nestjs-pino';
 
 @Module({
   imports: [
@@ -15,6 +16,13 @@ import { SessionModule } from './modules/session.module';
     MikroOrmModule.forFeature({ entities: [User] }),
     NatsModule,
     SessionModule,
+    LoggerModule.forRoot({
+      pinoHttp: {
+        transport: {
+          target: 'pino-pretty',
+        },
+      },
+    }),
   ],
   controllers: [AppController],
   providers: [AppService],

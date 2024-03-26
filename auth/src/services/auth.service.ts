@@ -1,20 +1,16 @@
-import { InjectRepository } from '@mikro-orm/nestjs';
-import { EntityRepository } from '@mikro-orm/postgresql';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
-import { User } from 'src/entities/User';
+import { User, UserRepo } from 'src/entities/User';
 import * as jwt from 'jsonwebtoken';
 import { SessionData } from 'express-session';
 import { Request } from 'express';
 
 @Injectable()
 export class AuthService {
-  constructor(
-    @InjectRepository(User)
-    private readonly userRepo: EntityRepository<User>,
-  ) {}
-  register(createUserDto: CreateUserDto, req: Request): User {
-    const user = this.userRepo.create({ email: createUserDto.email });
+  constructor(private userRepo: UserRepo) {}
+  async register(createUserDto: CreateUserDto, req: Request): Promise<User> {
+    Logger.warn(createUserDto);
+    const user = new User(createUserDto);
     // TODO: Create Mail service and send verification mail
     const userJwt = jwt.sign(
       {
@@ -26,6 +22,7 @@ export class AuthService {
 
     const session = req.session as CustomSessionData;
     session.jwt = userJwt;
+    await this.userRepo.getEntityManager().persistAndFlush(user);
     return user;
   }
 }
