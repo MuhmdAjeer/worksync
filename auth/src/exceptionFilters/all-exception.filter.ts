@@ -17,7 +17,6 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
 
     response.status(500).json({
-      id: request.id,
       timestamp: new Date().toISOString(),
       path: request.url,
       message,
