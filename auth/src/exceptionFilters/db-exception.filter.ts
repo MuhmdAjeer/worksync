@@ -18,7 +18,6 @@ export class UniqueConstraintExceptionFilter implements ExceptionFilter {
     const request = ctx.getRequest<Request>();
 
     response.status(HttpStatus.CONFLICT).json({
-      id: request.id,
       timestamp: new Date().toISOString(),
       path: request.url,
       message: exception.message,

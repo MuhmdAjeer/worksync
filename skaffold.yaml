@@ -10,6 +10,18 @@ build:
             dest: .
       docker:
         dockerfile: Dockerfile
+    - image: muhmdajeer/web
+      context: web
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+           - src: '**/*.js'
+             dest: .
+           - src: '**/*.tsx'
+             dest: .
+           - src: '**/*.ts'
+             dest: .
   local:
     push: false
 manifests:
