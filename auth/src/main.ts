@@ -10,9 +10,13 @@ import {
 import * as cookieParser from 'cookie-parser';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, { logger: new Logger() });
+  const app = await NestFactory.create(AppModule, {
+    logger: new Logger(),
+    cors: true,
+  });
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.use(cookieParser());
+  app.enableCors({ origin: '*' });
   app.use(
     session({
       secret: 'my-secret',
