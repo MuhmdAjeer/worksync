@@ -10,6 +10,7 @@ import {
 import * as cookieParser from 'cookie-parser';
 import { NextFunction, Response } from 'express';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as fs from 'fs';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -40,6 +41,7 @@ async function bootstrap() {
     .addTag('auth')
     .build();
   const document = SwaggerModule.createDocument(app, config);
+  fs.writeFileSync('./swagger-spec.json', JSON.stringify(document));
   SwaggerModule.setup('api', app, document);
   app.useGlobalFilters(
     new AllExceptionsFilter(),
