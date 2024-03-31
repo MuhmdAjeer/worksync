@@ -24,6 +24,7 @@ export class AuthController {
     @Body() createUserDto: CreateUserDto,
     @Req() request: Request,
   ): Promise<User> {
+    this.logger.log(request);
     return this.authService.register(createUserDto, request);
   }
 

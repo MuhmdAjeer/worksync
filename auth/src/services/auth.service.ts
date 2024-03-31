@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { ConflictException, Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
 import { User, UserRepo } from 'src/entities/User';
 import * as jwt from 'jsonwebtoken';
@@ -20,6 +20,12 @@ export class AuthService {
   private readonly logger = new Logger('auth svc');
 
   async register(createUserDto: CreateUserDto, req: Request): Promise<User> {
+    const userExist = await this.userRepo.findOne({
+      email: createUserDto.email,
+    });
+    if (userExist) {
+      throw new ConflictException('Email already exist');
+    }
     const user = new User(createUserDto);
     // TODO: Create Mail service and send verification mail
     const userJwt = jwt.sign(

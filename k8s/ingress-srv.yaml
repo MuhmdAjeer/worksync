@@ -6,10 +6,16 @@ metadata:
     kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$1
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
 spec:
+  # tls:
+  #   - hosts:
+  #       - worksync.dev
+  #     secretName: my-tls
   ingressClassName: nginx
   rules:
-    - host: worksync.dev
+    - host: worksync.test
       http:
         paths:
           - path: /api/auth/(.*)
@@ -19,10 +25,10 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
-          - path: /?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: web-srv
-                port:
-                  number: 3000
+          # - path: /?(.*)
+          #   pathType: ImplementationSpecific
+          #   backend:
+          #     service:
+          #       name: web-srv
+          #       port:
+          #         number: 3000
