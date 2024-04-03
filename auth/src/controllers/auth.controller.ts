@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   Logger,
@@ -7,6 +8,7 @@ import {
   Res,
   UseGuards,
 } from '@nestjs/common';
+import { ApiBadRequestResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
 import { User } from 'src/entities/User';
@@ -20,6 +22,7 @@ export class AuthController {
   private readonly logger = new Logger('auth controller');
 
   @Post('register')
+  @ApiBadRequestResponse({ type: BadRequestException })
   register(
     @Body() createUserDto: CreateUserDto,
     @Req() request: Request,
