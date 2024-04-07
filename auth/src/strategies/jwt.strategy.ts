@@ -2,7 +2,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { User } from 'src/entities/User';
+import { User } from 'src/entities/User.entity';
 import { AuthService } from 'src/services/auth.service';
 import { ClsService } from 'nestjs-cls';
 import { Request } from 'express';

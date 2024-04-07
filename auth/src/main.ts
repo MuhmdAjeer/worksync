@@ -9,6 +9,7 @@ import {
 } from './exceptionFilters/index';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { natsWrapper } from './nats.wrapper';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
@@ -43,6 +44,13 @@ async function bootstrap() {
     new UniqueConstraintExceptionFilter(),
   );
 
+  await natsWrapper.connect('worksync', 'auth', 'nats://nats-srv:4222');
+  process.on('SIGINT', () => {
+    natsWrapper.client.close();
+  });
+  process.on('SIGTERM', () => {
+    natsWrapper.client.close();
+  });
   await app.listen(3000);
 }
 bootstrap();

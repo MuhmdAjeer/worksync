@@ -1,6 +1,11 @@
-import { ConflictException, Injectable, Logger } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  Logger,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
-import { User, UserRepo } from 'src/entities/User';
+import { User, UserRepo } from 'src/entities/User.entity';
 import * as jwt from 'jsonwebtoken';
 import { SessionData } from 'express-session';
 import { Request } from 'express';
@@ -9,13 +14,17 @@ import * as bcrypt from 'bcrypt';
 import { InvalidPasswordException } from 'src/exceptions';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
-
+import { natsWrapper } from 'src/nats.wrapper';
+import { RequestOTPPublisher } from 'src/events/publishers/SendOtp';
+import * as speakeasy from 'speakeasy';
+import { OTP, OtpRepo } from 'src/entities/Otp.entity';
 @Injectable()
 export class AuthService {
   constructor(
     private userRepo: UserRepo,
     private readonly jwtService: JwtService,
     private configSvc: ConfigService,
+    private otpRepo: OtpRepo,
   ) {}
   private readonly logger = new Logger('auth svc');
 
@@ -27,7 +36,6 @@ export class AuthService {
       throw new ConflictException('Email already exist');
     }
     const user = new User(createUserDto);
-    // TODO: Create Mail service and send verification mail
     const userJwt = jwt.sign(
       {
         id: user.id,
@@ -38,7 +46,10 @@ export class AuthService {
 
     const session = req.session as CustomSessionData;
     session.jwt = userJwt;
+    this.logger.log({ user });
+    await this.sendOTP(user.email);
     await this.userRepo.getEntityManager().persistAndFlush(user);
+
     return user;
   }
 
@@ -66,6 +77,36 @@ export class AuthService {
       email: payload.email,
       google_id: payload.google_id,
     });
+  }
+
+  async sendOTP(email: string) {
+    const secret = speakeasy.generateSecret();
+    const token = speakeasy.totp({ secret: secret.base32, encoding: 'base32' });
+    let otpModel: OTP;
+    const OTPAlreadySent = await this.otpRepo.findOne({ email });
+    if (OTPAlreadySent) {
+      otpModel = OTPAlreadySent;
+      otpModel.secret = secret.base32;
+    } else {
+      otpModel = new OTP({ email, secret: secret.base32 });
+    }
+    new RequestOTPPublisher(natsWrapper.client).publish({
+      email,
+      code: token,
+    });
+    await this.otpRepo.getEntityManager().persistAndFlush(otpModel);
+  }
+
+  async verifyOtp(email: string, code: number) {
+    const otpModel = await this.otpRepo.findOneOrFail({ email });
+    const tokenValidates = speakeasy.totp.verify({
+      secret: otpModel.secret,
+      encoding: 'base32',
+      token: code.toString(),
+      window: 6,
+    });
+    if (!tokenValidates) throw new UnauthorizedException();
+    return;
   }
 
   async findOne(id: number): Promise<User> {

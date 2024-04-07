@@ -11,13 +11,17 @@ import {
 import { ApiBadRequestResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
-import { User } from 'src/entities/User';
+import { User } from 'src/entities/User.entity';
 import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { AuthService } from 'src/services/auth.service';
-
+import { JwtService } from '@nestjs/jwt';
+import { SendOTPDto, verifyOTPDto } from 'src/dtos/VerificationDto';
 @Controller('/')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   private readonly logger = new Logger('auth controller');
 
@@ -51,5 +55,17 @@ export class AuthController {
   logout(@Res({ passthrough: true }) response: Response) {
     response.clearCookie('jwt');
     return { success: true };
+  }
+
+  @Post('verify/otp/send')
+  async sendOtp(@Body() { email }: SendOTPDto) {
+    await this.authService.sendOTP(email);
+    return;
+  }
+
+  @Post('/verify/otp')
+  async verifyOtp(@Body() { code, email }: verifyOTPDto) {
+    await this.authService.verifyOtp(email, code);
+    return;
   }
 }
