@@ -1,8 +1,8 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   Logger,
-  UnauthorizedException,
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
 import { User, UserRepo } from 'src/entities/User.entity';
@@ -105,7 +105,7 @@ export class AuthService {
       token: code.toString(),
       window: 6,
     });
-    if (!tokenValidates) throw new UnauthorizedException();
+    if (!tokenValidates) throw new BadRequestException();
     return;
   }
 
