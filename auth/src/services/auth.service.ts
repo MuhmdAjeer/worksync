@@ -47,7 +47,7 @@ export class AuthService {
       throw new EntityNotFoundException(email);
     }
     const compareRes = await bcrypt.compare(password, user.password);
-    this.logger.error(password);
+    this.logger.error(password, user.password);
     if (!compareRes) {
       throw new InvalidPasswordException();
     }
@@ -85,15 +85,18 @@ export class AuthService {
     await this.otpRepo.getEntityManager().persistAndFlush(otpModel);
   }
 
-  async verifyOtp(email: string, code: number) {
+  async verifyOtp(email: string, code: string) {
     const otpModel = await this.otpRepo.findOneOrFail({ email });
     const tokenValidates = speakeasy.totp.verify({
       secret: otpModel.secret,
       encoding: 'base32',
-      token: code.toString(),
+      token: code,
       window: 6,
     });
     if (!tokenValidates) throw new BadRequestException();
+    const user = await this.userRepo.findOneOrFail({ email });
+    user.verified_at = new Date();
+    await this.userRepo.getEntityManager().persistAndFlush(user);
     return;
   }
 

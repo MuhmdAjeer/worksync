@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNumber } from 'class-validator';
+import { IsEmail, Length } from 'class-validator';
 
 export class SendOTPDto {
   @IsEmail()
@@ -8,9 +8,9 @@ export class SendOTPDto {
 }
 
 export class verifyOTPDto {
-  @IsNumber()
+  @Length(6)
   @ApiProperty()
-  code: number;
+  code: string;
 
   @IsEmail()
   @ApiProperty()

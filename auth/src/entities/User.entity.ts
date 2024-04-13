@@ -1,6 +1,5 @@
 import {
   BeforeCreate,
-  BeforeUpdate,
   Entity,
   EntityRepositoryType,
   PrimaryKey,
@@ -27,8 +26,10 @@ export class User {
   @Property()
   password: string;
 
+  @Property({ default: null, nullable: true })
+  verified_at?: Date;
+
   @BeforeCreate()
-  @BeforeUpdate()
   async hashPassword() {
     if (this.password) {
       this.password = hashPassword(this.password);
