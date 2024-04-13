@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   Logger,
   Post,
   Req,
@@ -16,6 +17,7 @@ import { LocalAuthGuard } from 'src/guards/local-auth.guard';
 import { AuthService } from 'src/services/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { SendOTPDto, verifyOTPDto } from 'src/dtos/VerificationDto';
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
 @Controller('/')
 export class AuthController {
   constructor(
@@ -27,12 +29,8 @@ export class AuthController {
 
   @Post('register')
   @ApiBadRequestResponse({ type: BadRequestException })
-  register(
-    @Body() createUserDto: CreateUserDto,
-    @Req() request: Request,
-  ): Promise<User> {
-    this.logger.log(request);
-    return this.authService.register(createUserDto, request);
+  register(@Body() createUserDto: CreateUserDto): Promise<User> {
+    return this.authService.register(createUserDto);
   }
 
   @UseGuards(LocalAuthGuard)
@@ -47,8 +45,13 @@ export class AuthController {
       signed: false,
       secure: false,
     });
+    return { access_token: token };
+  }
 
-    return { success: true };
+  @Get('/currentUser')
+  @UseGuards(JwtAuthGuard)
+  getCurrentUser(@Req() req: Request & { user: User }) {
+    return req.user;
   }
 
   @Post('/logout')

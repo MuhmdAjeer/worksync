@@ -8,6 +8,8 @@ build:
         manual:
           - src: src/**/*.ts
             dest: .
+          - src: "src/**/*.*.ts"
+            dest: .
       docker:
         dockerfile: Dockerfile
     - image: muhmdajeer/mail

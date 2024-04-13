@@ -6,9 +6,6 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
 import { User, UserRepo } from 'src/entities/User.entity';
-import * as jwt from 'jsonwebtoken';
-import { SessionData } from 'express-session';
-import { Request } from 'express';
 import { EntityNotFoundException } from 'src/exceptions/entityNotFound.exception';
 import * as bcrypt from 'bcrypt';
 import { InvalidPasswordException } from 'src/exceptions';
@@ -28,7 +25,7 @@ export class AuthService {
   ) {}
   private readonly logger = new Logger('auth svc');
 
-  async register(createUserDto: CreateUserDto, req: Request): Promise<User> {
+  async register(createUserDto: CreateUserDto): Promise<User> {
     const userExist = await this.userRepo.findOne({
       email: createUserDto.email,
     });
@@ -36,16 +33,7 @@ export class AuthService {
       throw new ConflictException('Email already exist');
     }
     const user = new User(createUserDto);
-    const userJwt = jwt.sign(
-      {
-        id: user.id,
-        email: user.email,
-      },
-      this.configSvc.getOrThrow('JWT_KEY'),
-    );
 
-    const session = req.session as CustomSessionData;
-    session.jwt = userJwt;
     this.logger.log({ user });
     await this.sendOTP(user.email);
     await this.userRepo.getEntityManager().persistAndFlush(user);
@@ -112,13 +100,6 @@ export class AuthService {
   async findOne(id: number): Promise<User> {
     return await this.userRepo.findOne({ id });
   }
-}
-
-interface CustomSessionData extends SessionData {
-  userId?: number;
-  email?: string;
-  name?: string;
-  jwt?: string;
 }
 
 export interface JwtPayload {
