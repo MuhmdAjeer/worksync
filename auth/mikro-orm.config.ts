@@ -25,5 +25,13 @@ export default defineConfig<PostgreSqlDriver>({
     emit: 'ts',
     generator: TSMigrationGenerator,
   },
+  seeder: {
+    path: 'dist/seeds',
+    pathTs: 'src/seeds',
+    defaultSeeder: 'DatabaseSeeder',
+    glob: '!(*.d).{js,ts}',
+    emit: 'ts',
+    fileName: (className: string) => className,
+  },
   extensions: [Migrator],
 });

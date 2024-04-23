@@ -40,6 +40,7 @@ export class User {
     email: string;
     google_id?: string;
     password: string;
+    verified_at?: Date;
   }) {
     this.username = user.username;
     this.email = user.email;
