@@ -25,6 +25,13 @@ spec:
                 name: auth-srv
                 port:
                   number: 3000
+          - path: /api/workspace/(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: workspace-srv
+                port:
+                  number: 3000
           - path: /?(.*)
             pathType: ImplementationSpecific
             backend:

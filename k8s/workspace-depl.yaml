@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspace-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workspace
+  template:
+    metadata:
+      labels:
+        app: workspace
+    spec:
+      containers:
+        - name: workspace
+          image: muhmdajeer/workspace
+          env:
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwtsecret
+                  key: JWT_KEY
+          ports:
+            - containerPort: 3000
+              protocol: TCP
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workspace-srv
+spec:
+  selector:
+    app: workspace
+  ports:
+    - name: workspace
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
