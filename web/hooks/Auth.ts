@@ -9,24 +9,27 @@ import {
 } from "@tanstack/react-query";
 import { toast } from "sonner";
 export const useLogin = (): UseMutationResult<
-  void,
+  { access_token: string },
   Error,
   CreateUserDto,
   unknown
 > => {
   const mutationOptions: UseMutationOptions<
-    void,
+    { access_token: string },
     Error,
     CreateUserDto,
     unknown
   > = {
     mutationFn: async (userDto: CreateUserDto) => {
-      await ApiClient.login(userDto);
+      return await ApiClient.login(userDto);
     },
     onError: (error) => {
       if (is4xxError(error, 401) || isNotFoundError(error)) {
         toast.error("Invalid credentials");
       }
+    },
+    onSuccess(data) {
+      localStorage.setItem("access_token", data.access_token);
     },
   };
 

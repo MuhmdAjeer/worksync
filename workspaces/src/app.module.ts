@@ -15,9 +15,11 @@ import { Workspace } from './entities/Workspace.entity';
 import { WorkspaceMember } from './entities/WorkspaceMember.entity';
 import { UserService } from './services/user.service';
 import { Invitation } from './entities/Invitation.entity';
-import { WorkspaceController } from './controllers/auth.controller';
+import { WorkspaceController } from './controllers/workspace.controller';
 import { UserRegisteredListener } from './events/listeners/UserRegisteredListener';
 import { UserUpdatedListener } from './events/listeners/UserUpdateListener';
+import { OnboardingController } from './controllers/onboarding.controller';
+import { OnboardingService } from './services/onboarding.service';
 
 @Module({
   imports: [
@@ -42,12 +44,13 @@ import { UserUpdatedListener } from './events/listeners/UserUpdateListener';
     ConfigModule.forRoot(),
     ClsModule.forRoot({ middleware: { mount: true } }),
   ],
-  controllers: [WorkspaceController, AppController],
+  controllers: [WorkspaceController, AppController, OnboardingController],
   providers: [
     AppService,
     JwtStrategy,
     LocalStrategy,
     WorkspaceService,
+    OnboardingService,
     UserService,
     UserRegisteredListener,
     UserUpdatedListener,

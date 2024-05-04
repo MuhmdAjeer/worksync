@@ -12,6 +12,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { CreateUserDto } from "@/generated/dto/create-user-dto";
+import { useLogin } from "@/hooks/Auth";
 import { login } from "@/lib/actions";
 import { loginSchema } from "@/lib/schema/Auth";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,6 +26,7 @@ import { toast } from "sonner";
 
 export default function Login() {
   const router = useRouter();
+  const loginMutation = useLogin();
   const [state, action] = useFormState(login, { error: "" });
   const form = useForm<CreateUserDto>({
     resolver: zodResolver(loginSchema),
@@ -39,7 +41,7 @@ export default function Login() {
     }
   }, [state]);
   const loginHandler: SubmitHandler<CreateUserDto> = async (data) => {
-    action(data);
+    loginMutation.mutate(data);
   };
 
   return (

@@ -2,7 +2,7 @@ import { MikroOrmModule } from '@mikro-orm/nestjs';
 import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { ClsModule } from 'nestjs-cls';
-import { WorkspaceController } from 'src/controllers/auth.controller';
+import { WorkspaceController } from 'src/controllers/workspace.controller';
 import { Invitation } from 'src/entities/Invitation.entity';
 import { User } from 'src/entities/User.entity';
 import { Workspace } from 'src/entities/Workspace.entity';

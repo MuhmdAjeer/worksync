@@ -5,7 +5,6 @@ import { ConfigService } from '@nestjs/config';
 import { User } from 'src/entities/User.entity';
 import { UserService } from 'src/services/user.service';
 import { ClsService } from 'nestjs-cls';
-import { Request } from 'express';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -15,15 +14,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     private clsService: ClsService,
   ) {
     super({
-      jwtFromRequest: ExtractJwt.fromExtractors([
-        (request: Request) => {
-          let token = null;
-          if (request && request.cookies) {
-            token = request.cookies['jwt'];
-          }
-          return token;
-        },
-      ]),
+      jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
       ignoreExpiration: false,
       secretOrKey: configService.getOrThrow<string>('JWT_KEY'),
     });

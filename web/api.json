@@ -2,6 +2,38 @@
     "openapi": "3.0.0",
     "paths": {
         "/": {
+            "post": {
+                "operationId": "WorkspaceController_createWorkspace",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateWorkspaceDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "operationId": "WorkspaceController_listUsers",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/app": {
             "get": {
                 "operationId": "AppController_getHello",
                 "parameters": [],
@@ -12,7 +44,7 @@
                 }
             }
         },
-        "/hi": {
+        "/app/health": {
             "get": {
                 "operationId": "AppController_getHi",
                 "parameters": [],
@@ -23,7 +55,7 @@
                 }
             }
         },
-        "/docs": {
+        "/app/docs": {
             "get": {
                 "operationId": "AppController_getDocs",
                 "parameters": [],
@@ -34,87 +66,16 @@
                 }
             }
         },
-        "/register": {
+        "/onboarding": {
             "post": {
-                "operationId": "AuthController_register",
+                "operationId": "OnboardingController_onboardUser",
                 "parameters": [],
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/CreateUserDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "400": {
-                        "description": "",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/BadRequestException"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/login": {
-            "post": {
-                "operationId": "AuthController_login",
-                "parameters": [],
-                "responses": {
-                    "201": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/logout": {
-            "post": {
-                "operationId": "AuthController_logout",
-                "parameters": [],
-                "responses": {
-                    "201": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/verify/otp/send": {
-            "post": {
-                "operationId": "AuthController_sendOtp",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SendOTPDto"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": ""
-                    }
-                }
-            }
-        },
-        "/verify/otp": {
-            "post": {
-                "operationId": "AuthController_verifyOtp",
-                "parameters": [],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/verifyOTPDto"
+                                "$ref": "#/components/schemas/OnboardDto"
                             }
                         }
                     }
@@ -128,63 +89,93 @@
         }
     },
     "info": {
-        "title": "Auth API",
+        "title": "Workspace API",
         "description": "",
         "version": "1.0",
         "contact": {}
     },
     "tags": [
         {
-            "name": "auth",
+            "name": "workspace",
             "description": ""
         }
     ],
     "servers": [],
     "components": {
         "schemas": {
-            "CreateUserDto": {
+            "MemberDto": {
                 "type": "object",
                 "properties": {
                     "email": {
                         "type": "string"
                     },
-                    "password": {
+                    "role": {
                         "type": "string"
                     }
                 },
                 "required": [
                     "email",
-                    "password"
+                    "role"
                 ]
             },
-            "BadRequestException": {
-                "type": "object",
-                "properties": {}
-            },
-            "SendOTPDto": {
+            "CreateWorkspaceDto": {
                 "type": "object",
                 "properties": {
-                    "email": {
+                    "name": {
                         "type": "string"
-                    }
-                },
-                "required": [
-                    "email"
-                ]
-            },
-            "verifyOTPDto": {
-                "type": "object",
-                "properties": {
-                    "code": {
-                        "type": "number"
                     },
-                    "email": {
+                    "use": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MemberDto"
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "use",
+                    "slug",
+                    "members"
+                ]
+            },
+            "OnboardDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "use": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MemberDto"
+                        }
+                    },
+                    "profile_picture": {
+                        "type": "string"
+                    },
+                    "user_name": {
                         "type": "string"
                     }
                 },
                 "required": [
-                    "code",
-                    "email"
+                    "name",
+                    "use",
+                    "slug",
+                    "members",
+                    "profile_picture",
+                    "user_name"
                 ]
             }
         }

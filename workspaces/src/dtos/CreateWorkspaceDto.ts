@@ -4,9 +4,20 @@ import {
   IsArray,
   IsEmail,
   IsNotEmpty,
+  IsOptional,
   IsString,
   ValidateNested,
 } from 'class-validator';
+class MemberDto {
+  @ApiProperty()
+  @IsEmail()
+  email: string;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  @IsString()
+  role: string;
+}
 
 export class CreateWorkspaceDto {
   @ApiProperty()
@@ -17,17 +28,23 @@ export class CreateWorkspaceDto {
   @IsNotEmpty()
   use: string;
 
+  @ApiProperty()
+  @IsNotEmpty()
+  slug: string;
+
+  @ApiProperty({ isArray: true, type: MemberDto })
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => MemberDto)
   members: MemberDto[];
 }
 
-class MemberDto {
-  @IsEmail()
-  email: string;
+export class OnboardDto extends CreateWorkspaceDto {
+  @ApiProperty()
+  @IsOptional()
+  profile_picture?: string;
 
+  @ApiProperty()
   @IsNotEmpty()
-  @IsString()
-  role: string;
+  user_name: string;
 }

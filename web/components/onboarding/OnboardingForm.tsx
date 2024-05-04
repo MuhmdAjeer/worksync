@@ -3,13 +3,15 @@ import { onboardingSchema } from "@/lib/schema/Workspace";
 import { OnboardingWorkspace } from "@/lib/types/Workspace";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import Typography from "../ui/Typography";
 import FileInput from "../ui/FileInput";
 import { cn } from "@/lib/utils";
 import InviteMemberInput, { Field } from "../InviteMemberInput";
+import { OnboardDto } from "@/generated/dto/onboard-dto";
+import { UseOnboardUser } from "@/hooks/Onboard";
 
 const WORKSYNC_USE_OPTIONS = [
   "Project Managing",
@@ -34,11 +36,12 @@ const WORKSYNC_USE_OPTIONS = [
 ];
 
 const OnboardingForm = () => {
-  const form = useForm<OnboardingWorkspace>({
+  const form = useForm<OnboardDto>({
     resolver: zodResolver(onboardingSchema),
   });
   const [step, setStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const onboardMutation = UseOnboardUser();
   const [fields, setFields] = useState([
     { email: "", role: "" },
     { email: "", role: "" },
@@ -54,8 +57,21 @@ const OnboardingForm = () => {
     setFields(x);
   };
 
+  const handleOnboarding = () => {
+    if (!selectedOption) return;
+    console.log('hi');
+    
+    const data: OnboardDto = {
+      ...form.getValues(),
+      members: fields,
+      use: selectedOption,
+      profile_picture: "xxxxxxxxx",
+    };
+    onboardMutation.mutate(data);
+  };
+
   return (
-    <form className="flex gap-4 flex-col">
+    <div className="flex gap-4 flex-col">
       {step === 1 && (
         <>
           <Typography className="mb-4" variant="h3">
@@ -90,7 +106,14 @@ const OnboardingForm = () => {
             />
           </div>
           <div>
-            <Button onClick={() => setStep(2)}>Go Live</Button>
+            <Button
+              onClick={(e) => {
+                e.preventDefault();
+                setStep(2);
+              }}
+            >
+              Go Live
+            </Button>
           </div>
         </>
       )}
@@ -104,7 +127,7 @@ const OnboardingForm = () => {
             <div>
               <Controller
                 control={form.control}
-                name="name"
+                name="user_name"
                 render={({ field, fieldState }) => (
                   <Input
                     {...field}
@@ -185,12 +208,19 @@ const OnboardingForm = () => {
           >
             + Add another
           </Button>
-          <Button disabled={fields.some((x) => !x.email || !x.role)}>
+          <Button
+            onClick={(e) => {
+              e.preventDefault();
+              handleOnboarding();
+            }}
+            disabled={fields.some((x) => !x.email || !x.role)}
+          >
             Invite Members
           </Button>
         </>
       )}
-    </form>
+      <Button onClick={() => setStep((prev) => prev - 1)}>go back</Button>
+    </div>
   );
 };
 
