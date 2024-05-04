@@ -31,6 +31,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       message: exception.message,
       stack: exception.stack,
       ...msg,
+      fd: 'Fds',
     });
   }
 }

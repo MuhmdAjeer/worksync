@@ -8,7 +8,7 @@ import {
 import { EntityRepository } from '@mikro-orm/postgresql';
 import * as bcrypt from 'bcrypt';
 
-@Entity({ repository: () => UserRepo })
+@Entity({ repository: () => UserRepo, tableName: 'users' })
 export class User {
   [EntityRepositoryType]?: UserRepo;
   @PrimaryKey()
@@ -29,12 +29,6 @@ export class User {
   @Property({ default: null, nullable: true })
   verified_at?: Date;
 
-  @BeforeCreate()
-  async hashPassword() {
-    if (this.password) {
-      this.password = hashPassword(this.password);
-    }
-  }
   constructor(user: {
     username?: string;
     email: string;
@@ -47,9 +41,6 @@ export class User {
     this.password = user.password;
     this.google_id = user.google_id;
   }
-}
-function hashPassword(password: string): string {
-  return bcrypt.hashSync(password, 10);
 }
 
 export class UserRepo extends EntityRepository<User> {}

@@ -3,9 +3,10 @@ import { defineConfig } from '@mikro-orm/core';
 import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
 
 export default defineConfig<PostgreSqlDriver>({
-  dbName: 'auth_db',
+  allowGlobalContext: true,
+  dbName: 'workspace_db',
   driver: PostgreSqlDriver,
-  host: 'auth-psql-srv',
+  host: 'workspace-psql-srv',
   port: 5432,
   user: 'myuser',
   password: 'mypassword',

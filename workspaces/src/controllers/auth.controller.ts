@@ -1,16 +1,21 @@
-import { Body, Controller, Logger, Post, UseGuards } from '@nestjs/common';
-import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { CreateWorkspaceDto } from 'src/dtos/CreateWorkspaceDto';
 import { WorkspaceService } from 'src/services/workspace.service';
-@Controller('/hi')
+import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+@Controller()
 export class WorkspaceController {
   constructor(private workspaceService: WorkspaceService) {}
 
   private readonly logger = new Logger('auth controller');
 
-  @UseGuards(LocalAuthGuard)
+  @UseGuards(JwtAuthGuard)
   @Post('/')
   async createWorkspace(@Body() createWorkspaceDto: CreateWorkspaceDto) {
     await this.workspaceService.create(createWorkspaceDto);
+  }
+
+  @Get('/users')
+  async listUsers() {
+    return await this.workspaceService.listUsers();
   }
 }

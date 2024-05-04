@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { User } from 'src/entities/User.entity';
-import { AuthService } from 'src/services/auth.service';
+import { UserService } from 'src/services/user.service';
 import { ClsService } from 'nestjs-cls';
 import { Request } from 'express';
 
@@ -11,7 +11,7 @@ import { Request } from 'express';
 export class JwtStrategy extends PassportStrategy(Strategy) {
   constructor(
     configService: ConfigService,
-    private authSvc: AuthService,
+    private userSvc: UserService,
     private clsService: ClsService,
   ) {
     super({
@@ -30,7 +30,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(decodedPayload: User): Promise<User> {
-    const user = await this.authSvc.findOne(decodedPayload.id);
+    const user = await this.userSvc.findOne(decodedPayload.id);
 
     this.clsService.set('reqUser', user);
     return user;

@@ -3,19 +3,19 @@ import { AppService } from './app.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import * as fs from 'fs';
 
-@Controller()
+@Controller('app')
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
+  @Get('/')
   @UseGuards(JwtAuthGuard)
   getHello(): string {
     return this.appService.getHello();
   }
 
-  @Get('/hi')
+  @Get('/health')
   getHi(): string {
-    return 'hiii';
+    return 'hi from workspace conroller';
   }
 
   @Get('/docs')

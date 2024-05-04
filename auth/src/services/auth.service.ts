@@ -15,6 +15,8 @@ import { natsWrapper } from 'src/nats.wrapper';
 import { RequestOTPPublisher } from 'src/events/publishers/SendOtp';
 import * as speakeasy from 'speakeasy';
 import { OTP, OtpRepo } from 'src/entities/Otp.entity';
+import { UserRegisteredPublisher } from 'src/events/publishers/UserRegistered';
+import { UserUpdatedPublisher } from 'src/events/publishers/UserUpdated';
 @Injectable()
 export class AuthService {
   constructor(
@@ -37,6 +39,10 @@ export class AuthService {
     this.logger.log({ user });
     await this.sendOTP(user.email);
     await this.userRepo.getEntityManager().persistAndFlush(user);
+    new UserRegisteredPublisher(natsWrapper.client).publish({
+      user,
+      version: user.id,
+    });
 
     return user;
   }
@@ -97,6 +103,10 @@ export class AuthService {
     const user = await this.userRepo.findOneOrFail({ email });
     user.verified_at = new Date();
     await this.userRepo.getEntityManager().persistAndFlush(user);
+    new UserUpdatedPublisher(natsWrapper.client).publish({
+      user,
+      version: user.id,
+    });
     return;
   }
 

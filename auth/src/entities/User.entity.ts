@@ -8,7 +8,7 @@ import {
 import { EntityRepository } from '@mikro-orm/postgresql';
 import * as bcrypt from 'bcrypt';
 
-@Entity({ repository: () => UserRepo })
+@Entity({ repository: () => UserRepo, tableName: 'users' })
 export class User {
   [EntityRepositoryType]?: UserRepo;
   @PrimaryKey()

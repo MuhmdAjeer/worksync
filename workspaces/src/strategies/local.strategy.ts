@@ -1,7 +1,7 @@
 import { Strategy } from 'passport-local';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable, Logger, NotFoundException } from '@nestjs/common';
-import { AuthService } from '../services/auth.service';
+import { UserService } from 'src/services/user.service';
 import { User } from 'src/entities/User.entity';
 import { ClsService } from 'nestjs-cls';
 
@@ -9,14 +9,14 @@ import { ClsService } from 'nestjs-cls';
 export class LocalStrategy extends PassportStrategy(Strategy) {
   private readonly logger = new Logger('strategy');
   constructor(
-    private authService: AuthService,
+    private userService: UserService,
     private clsService: ClsService,
   ) {
     super({ usernameField: 'email' });
   }
 
   async validate(username: string, password: string): Promise<User> {
-    const user = await this.authService.validateUser(username, password);
+    const user = await this.userService.validateUser(username, password);
     this.logger.log({ userdd: user });
     if (!user.verified_at) {
       throw new NotFoundException();

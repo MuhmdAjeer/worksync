@@ -10,8 +10,11 @@ import {
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { natsWrapper } from './nats.wrapper';
+import { UserRegisteredListener } from './events/listeners/UserRegisteredListener';
+import { UserUpdatedListener } from './events/listeners/UserUpdateListener';
 
 async function bootstrap() {
+  await natsWrapper.connect('worksync', 'workspace', 'nats://nats-srv:4222');
   const app = await NestFactory.create(AppModule, {
     logger: new Logger(),
   });
@@ -31,6 +34,7 @@ async function bootstrap() {
       saveUninitialized: false,
     }),
   );
+
   const config = new DocumentBuilder()
     .setTitle('Workspace API')
     .setVersion('1.0')
@@ -38,19 +42,25 @@ async function bootstrap() {
     .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
   app.useGlobalFilters(
     new AllExceptionsFilter(),
     new HttpExceptionFilter(),
     new UniqueConstraintExceptionFilter(),
   );
 
-  await natsWrapper.connect('worksync', 'workspace', 'nats://nats-srv:4222');
+  const userRegisteredListener = app.get(UserRegisteredListener);
+  const userUpdatedListener = app.get(UserUpdatedListener);
+  userUpdatedListener.listen();
+  userRegisteredListener.listen();
+
   process.on('SIGINT', () => {
     natsWrapper.client.close();
   });
   process.on('SIGTERM', () => {
     natsWrapper.client.close();
   });
+
   await app.listen(3000);
 }
 bootstrap();

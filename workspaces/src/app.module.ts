@@ -11,18 +11,20 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { WorkspaceService } from './services/workspace.service';
 import { ClsModule } from 'nestjs-cls';
-import { OTP } from './entities/Otp.entity';
 import { Workspace } from './entities/Workspace.entity';
 import { WorkspaceMember } from './entities/WorkspaceMember.entity';
-import { AuthService } from './services/auth.service';
+import { UserService } from './services/user.service';
 import { Invitation } from './entities/Invitation.entity';
+import { WorkspaceController } from './controllers/auth.controller';
+import { UserRegisteredListener } from './events/listeners/UserRegisteredListener';
+import { UserUpdatedListener } from './events/listeners/UserUpdateListener';
 
 @Module({
   imports: [
     WorkspaceModule,
     MikroOrmModule.forRoot(config),
     MikroOrmModule.forFeature({
-      entities: [User, OTP, Workspace, WorkspaceMember, Invitation],
+      entities: [User, Workspace, WorkspaceMember, Invitation],
     }),
     JwtModule.registerAsync({
       global: true,
@@ -40,13 +42,15 @@ import { Invitation } from './entities/Invitation.entity';
     ConfigModule.forRoot(),
     ClsModule.forRoot({ middleware: { mount: true } }),
   ],
-  controllers: [AppController],
+  controllers: [WorkspaceController, AppController],
   providers: [
     AppService,
     JwtStrategy,
     LocalStrategy,
     WorkspaceService,
-    AuthService,
+    UserService,
+    UserRegisteredListener,
+    UserUpdatedListener,
   ],
 })
 export class AppModule {}

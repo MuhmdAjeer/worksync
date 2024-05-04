@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { User } from 'src/entities/User.entity';
+import { User, UserRepo } from 'src/entities/User.entity';
 import { CreateWorkspaceDto } from 'src/dtos/CreateWorkspaceDto';
 import { Workspace, WorkspaceRepo } from 'src/entities/Workspace.entity';
 import { ClsService } from 'nestjs-cls';
@@ -12,6 +12,7 @@ export class WorkspaceService {
     private workspaceRepo: WorkspaceRepo,
     private invitationRepo: InvitationRepo,
     private clsService: ClsService,
+    private userRepo: UserRepo,
   ) {}
   private readonly logger = new Logger('workspace svc');
 
@@ -40,5 +41,11 @@ export class WorkspaceService {
       });
       this.invitationRepo.getEntityManager().persistAndFlush(invitation);
     }
+  }
+
+  async listUsers() {
+    const users = await this.userRepo.findAll();
+    this.logger.log({ usersddvdfd: users });
+    return users;
   }
 }

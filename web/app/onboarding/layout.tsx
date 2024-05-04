@@ -18,7 +18,7 @@ const OnboardingLayout = ({
           muhdajeer@gmail.com
         </Typography>
       </div>
-      <Card className="mx-20 mt-8 h-full border outline-1 outline outline-offset-4 outline-white border-black border-opacity-20 rounded-lg shadow-2xl">
+      <Card className="mx-20 mt-8 h-full border border-black border-opacity-20 rounded-lg shadow-2xl">
         {/* {children} */}
         <div className="flex h-full">
           <div className="w-1/5 ">
