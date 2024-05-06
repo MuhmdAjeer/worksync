@@ -1,6 +1,6 @@
 import { Body, Controller, Logger, Post, UseGuards } from '@nestjs/common';
 import { OnboardDto } from 'src/dtos/CreateWorkspaceDto';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@worksyncplus/common';
 import { OnboardingService } from 'src/services/onboarding.service';
 @Controller('onboarding')
 export class OnboardingController {

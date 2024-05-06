@@ -6,9 +6,9 @@ import {
 } from '@nestjs/common';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
 import { User, UserRepo } from 'src/entities/User.entity';
-import { EntityNotFoundException } from 'src/exceptions/entityNotFound.exception';
+import { EntityNotFoundException } from '@worksyncplus/common';
 import * as bcrypt from 'bcrypt';
-import { InvalidPasswordException } from 'src/exceptions';
+import { InvalidPasswordException } from '@worksyncplus/common';
 import { JwtService } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 import { natsWrapper } from 'src/nats.wrapper';

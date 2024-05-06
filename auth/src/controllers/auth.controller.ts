@@ -13,11 +13,11 @@ import { ApiBadRequestResponse } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 import { CreateUserDto } from 'src/dtos/CreateUserDto';
 import { User } from 'src/entities/User.entity';
-import { LocalAuthGuard } from 'src/guards/local-auth.guard';
+import { LocalAuthGuard } from '@worksyncplus/common';
 import { AuthService } from 'src/services/auth.service';
 import { JwtService } from '@nestjs/jwt';
 import { SendOTPDto, verifyOTPDto } from 'src/dtos/VerificationDto';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@worksyncplus/common';
 @Controller('/')
 export class AuthController {
   constructor(

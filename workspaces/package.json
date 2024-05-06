@@ -7,7 +7,7 @@
   "license": "UNLICENSED",
   "scripts": {
     "build": "nest build",
-    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
+    "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -20,6 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
+    "@golevelup/nestjs-modules": "^0.7.1",
     "@mikro-orm/cli": "^6.1.11",
     "@mikro-orm/core": "^6.1.11",
     "@mikro-orm/migrations": "^6.1.11",
@@ -40,7 +41,7 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/speakeasy": "^2.0.10",
-    "@worksyncplus/common": "^1.0.18",
+    "@worksyncplus/common": "^1.0.22",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
@@ -95,7 +96,7 @@
       "json",
       "ts"
     ],
-    "rootDir": "src",
+    "rootDir": ".",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
@@ -103,15 +104,22 @@
     "collectCoverageFrom": [
       "**/*.(t|j)s"
     ],
-    "coverageDirectory": "../coverage",
-    "testEnvironment": "node"
+    "coverageDirectory": "./coverage",
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src/",
+      "<rootDir>/libs/"
+    ],
+    "moduleNameMapper": {
+      "^app/my-library(|/.*)$": "<rootDir>/libs/my-library/src/$1"
+    }
   },
   "mikro-orm": {
     "useTsNode": true,
     "tsConfigPath": "./tsconfig.mikro-orm.json",
     "configPaths": [
       "./src/mikro-orm.config.ts",
-      "./dist/mikro-orm.config.js"
+      "./dist/src/mikro-orm.config.js"
     ]
   }
 }

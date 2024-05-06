@@ -1,12 +1,10 @@
 import {
-  BeforeCreate,
   Entity,
   EntityRepositoryType,
   PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
-import * as bcrypt from 'bcrypt';
 
 @Entity({ repository: () => UserRepo, tableName: 'users' })
 export class User {

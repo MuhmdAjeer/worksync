@@ -1,10 +1,10 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto, UserDto } from 'src/dtos/user';
 import { User, UserRepo } from 'src/entities/User.entity';
-import { EntityNotFoundException } from 'src/exceptions/entityNotFound.exception';
 import * as bcrypt from 'bcrypt';
-import { InvalidPasswordException } from 'src/exceptions';
+import { InvalidPasswordException } from '@worksyncplus/common';
 import { JwtService } from '@nestjs/jwt';
+import { EntityNotFoundException } from '@worksyncplus/common';
 import { ConfigService } from '@nestjs/config';
 @Injectable()
 export class UserService {

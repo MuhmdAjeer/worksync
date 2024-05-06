@@ -6,7 +6,7 @@ import {
   UniqueConstraintExceptionFilter,
   AllExceptionsFilter,
   HttpExceptionFilter,
-} from './exceptionFilters/index';
+} from '@worksyncplus/common';
 import * as cookieParser from 'cookie-parser';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { natsWrapper } from './nats.wrapper';

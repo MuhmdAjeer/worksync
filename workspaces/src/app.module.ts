@@ -7,7 +7,6 @@ import config from '../mikro-orm.config';
 import { User } from './entities/User.entity';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService, ConfigModule } from '@nestjs/config';
-import { JwtStrategy } from './strategies/jwt.strategy';
 import { LocalStrategy } from './strategies/local.strategy';
 import { WorkspaceService } from './services/workspace.service';
 import { ClsModule } from 'nestjs-cls';
@@ -20,6 +19,7 @@ import { UserRegisteredListener } from './events/listeners/UserRegisteredListene
 import { UserUpdatedListener } from './events/listeners/UserUpdateListener';
 import { OnboardingController } from './controllers/onboarding.controller';
 import { OnboardingService } from './services/onboarding.service';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [

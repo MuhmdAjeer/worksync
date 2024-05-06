@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Logger, Post, UseGuards } from '@nestjs/common';
 import { CreateWorkspaceDto } from 'src/dtos/CreateWorkspaceDto';
 import { WorkspaceService } from 'src/services/workspace.service';
-import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
+import { JwtAuthGuard } from '@worksyncplus/common';
 @Controller()
 export class WorkspaceController {
   constructor(private workspaceService: WorkspaceService) {}
