@@ -1,3 +1,0 @@
-psql -u myuser -d auth_db
-\d 
-\d+ table

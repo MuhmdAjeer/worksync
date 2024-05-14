@@ -24,7 +24,9 @@ export class OnboardingService {
       use: onboardDto.use,
     });
 
+    await this.workspaceRepo.getEntityManager().persistAndFlush(workspace);
     for (const member of onboardDto.members) {
+      if (member.email === user.email) return;
       const invitation = new Invitation({
         email: member.email,
         workspace_id: workspace.id,
@@ -38,10 +40,10 @@ export class OnboardingService {
           owner: { email: user.email },
         },
       });
-      this.workspaceRepo.getEntityManager().persistAndFlush(workspace);
-      this.userRepo.assign(user, { username: onboardDto.user_name });
-      await this.userRepo.getEntityManager().persistAndFlush(user);
-      this.invitationRepo.getEntityManager().persistAndFlush(invitation);
+      await this.invitationRepo.getEntityManager().persistAndFlush(invitation);
     }
+    this.userRepo.assign(user, { username: onboardDto.user_name });
+    await this.userRepo.getEntityManager().persistAndFlush(user);
+    return workspace;
   }
 }

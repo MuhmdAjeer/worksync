@@ -5,6 +5,7 @@ import { ConfigService } from '@nestjs/config';
 import { User } from 'src/entities/User.entity';
 import { UserService } from 'src/services/user.service';
 import { ClsService } from 'nestjs-cls';
+import { Request } from 'express';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {

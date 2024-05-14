@@ -18,7 +18,7 @@ export class Invitation {
   @Property()
   workspace_id: number;
 
-  @Property()
+  @Property({ default: false })
   is_accepted: boolean;
 
   @Property()

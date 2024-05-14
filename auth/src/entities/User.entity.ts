@@ -46,6 +46,7 @@ export class User {
     this.email = user.email;
     this.password = user.password;
     this.google_id = user.google_id;
+    this.verified_at = user.verified_at;
   }
 }
 function hashPassword(password: string): string {
