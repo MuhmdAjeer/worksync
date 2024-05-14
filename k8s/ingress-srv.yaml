@@ -9,10 +9,6 @@ metadata:
     nginx.ingress.kubernetes.io/enable-cors: "true"
     nginx.ingress.kubernetes.io/cors-allow-methods: "PUT, GET, POST, OPTIONS"
 spec:
-  # tls:
-  #   - hosts:
-  #       - worksync.dev
-  #     secretName: my-tls
   ingressClassName: nginx
   rules:
     - host: worksync.test
@@ -30,12 +26,5 @@ spec:
             backend:
               service:
                 name: workspace-srv
-                port:
-                  number: 3000
-          - path: /?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: mail-srv
                 port:
                   number: 3000
