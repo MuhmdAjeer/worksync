@@ -4,9 +4,9 @@ import { Migrator, TSMigrationGenerator } from '@mikro-orm/migrations';
 import { SeedManager } from '@mikro-orm/seeder';
 
 export default defineConfig<PostgreSqlDriver>({
-  dbName: 'worksync_db',
+  dbName: 'auth_db',
   driver: PostgreSqlDriver,
-  host: 'psql-db-srv',
+  host: 'auth-db-srv',
   port: 5432,
   user: 'myuser',
   password: 'mypassword',

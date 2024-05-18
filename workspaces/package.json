@@ -21,6 +21,9 @@
     "seed": "npx mikro-orm seeder:run"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.575.0",
+    "@aws-sdk/credential-providers": "^3.575.0",
+    "@aws-sdk/s3-presigned-post": "^3.575.0",
     "@golevelup/nestjs-modules": "^0.7.1",
     "@mikro-orm/cli": "^6.1.11",
     "@mikro-orm/core": "^6.1.11",
@@ -42,12 +45,14 @@
     "@types/passport-jwt": "^4.0.1",
     "@types/passport-local": "^1.0.38",
     "@types/speakeasy": "^2.0.10",
+    "@types/uuid": "^9.0.8",
     "@worksyncplus/common": "^1.0.22",
     "bcrypt": "^5.1.1",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "date-fns": "^3.6.0",
     "express-list-routes": "^1.2.1",
     "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
@@ -64,7 +69,8 @@
     "pino-pretty": "^11.0.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
-    "speakeasy": "^2.0.0"
+    "speakeasy": "^2.0.0",
+    "uuid": "^9.0.1"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.0.0",
@@ -87,7 +93,7 @@
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.0",
     "ts-loader": "^9.4.3",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
     "typescript": "^5.1.3"
   },

@@ -1,0 +1,226 @@
+{
+    "openapi": "3.0.0",
+    "paths": {
+        "/": {
+            "post": {
+                "operationId": "WorkspaceController_createWorkspace",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/CreateWorkspaceDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/users": {
+            "get": {
+                "operationId": "WorkspaceController_listUsers",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/app": {
+            "get": {
+                "operationId": "AppController_getHello",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/app/health": {
+            "get": {
+                "operationId": "AppController_getHi",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/app/docs": {
+            "get": {
+                "operationId": "AppController_getDocs",
+                "parameters": [],
+                "responses": {
+                    "200": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/onboarding": {
+            "post": {
+                "operationId": "OnboardingController_onboardUser",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/OnboardDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                }
+            }
+        },
+        "/upload": {
+            "post": {
+                "operationId": "UploadController_getUploadParams",
+                "parameters": [],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/FileUploadRequestDto"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": ""
+                    }
+                },
+                "tags": [
+                    "Uploads"
+                ]
+            }
+        }
+    },
+    "info": {
+        "title": "Workspace API",
+        "description": "",
+        "version": "1.0",
+        "contact": {}
+    },
+    "tags": [
+        {
+            "name": "workspace",
+            "description": ""
+        }
+    ],
+    "servers": [],
+    "components": {
+        "schemas": {
+            "MemberDto": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "email",
+                    "role"
+                ]
+            },
+            "CreateWorkspaceDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "use": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MemberDto"
+                        }
+                    }
+                },
+                "required": [
+                    "name",
+                    "use",
+                    "slug",
+                    "members"
+                ]
+            },
+            "OnboardDto": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "use": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "members": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MemberDto"
+                        }
+                    },
+                    "profile_picture": {
+                        "type": "string"
+                    },
+                    "user_name": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "name",
+                    "use",
+                    "slug",
+                    "members",
+                    "profile_picture",
+                    "user_name"
+                ]
+            },
+            "FileUploadRequestDto": {
+                "type": "object",
+                "properties": {
+                    "type": {
+                        "type": "string"
+                    },
+                    "file_name": {
+                        "type": "string"
+                    },
+                    "mimeType": {
+                        "type": "string"
+                    }
+                },
+                "required": [
+                    "type",
+                    "file_name",
+                    "mimeType"
+                ]
+            }
+        }
+    }
+}

@@ -12,6 +12,7 @@ import { cn } from "@/lib/utils";
 import InviteMemberInput, { Field } from "../InviteMemberInput";
 import { OnboardDto } from "@/generated/dto/onboard-dto";
 import { UseOnboardUser } from "@/hooks/Onboard";
+import ApiClient from "@/lib/apiClient";
 
 const WORKSYNC_USE_OPTIONS = [
   "Project Managing",
@@ -41,6 +42,7 @@ const OnboardingForm = () => {
   });
   const [step, setStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [avatar, setAvatar] = useState<globalThis.File>();
   const onboardMutation = UseOnboardUser();
   const [fields, setFields] = useState([
     { email: "", role: "" },
@@ -59,13 +61,24 @@ const OnboardingForm = () => {
 
   const handleOnboarding = async () => {
     if (!selectedOption) return;
+    let profile_picture_url = "NO IMAGE";
+    if (avatar) {
+      profile_picture_url = await ApiClient.uploadFile(
+        {
+          file_name: avatar?.name,
+          mimeType: avatar?.type,
+          type: "user_image",
+        },
+        avatar
+      );
+    }
     const data: OnboardDto = {
       ...form.getValues(),
       members: fields,
       use: selectedOption,
-      profile_picture: "xxxxxxxxx",
+      profile_picture: profile_picture_url,
     };
-    onboardMutation.mutateAsync(data);
+    onboardMutation.mutate(data);
   };
 
   return (
@@ -122,7 +135,11 @@ const OnboardingForm = () => {
             What should we call you?
           </Typography>
           <div className="flex flex-row gap-4 items-center   ">
-            <FileInput placeHolder="Profile Image" />
+            <FileInput
+              file={avatar}
+              setFile={setAvatar}
+              placeHolder="Profile Image"
+            />
             <div>
               <Controller
                 control={form.control}

@@ -45,7 +45,7 @@ export class AuthController {
       signed: false,
       secure: false,
     });
-    return { access_token: token };
+    return { access_token: token, ...req.user };
   }
 
   @Get('/currentUser')

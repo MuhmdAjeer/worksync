@@ -5,15 +5,15 @@ import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
+import ReactQueryProvider from "@/providers/ReactQuery";
 
-const queryClient = new QueryClient();
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
   return getLayout(
-    <QueryClientProvider client={queryClient}>
+    <ReactQueryProvider>
       <SessionProvider session={session}>
         <ThemeProvider
           attribute="class"
@@ -24,7 +24,7 @@ export default function App({
           <Component {...pageProps} />
         </ThemeProvider>
       </SessionProvider>
-    </QueryClientProvider>
+    </ReactQueryProvider>
   );
 }
 

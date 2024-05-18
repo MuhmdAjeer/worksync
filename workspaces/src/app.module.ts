@@ -20,13 +20,16 @@ import { UserUpdatedListener } from './events/listeners/UserUpdateListener';
 import { OnboardingController } from './controllers/onboarding.controller';
 import { OnboardingService } from './services/onboarding.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
+import { UploadService } from './services/upload.service';
+import { UploadController } from './controllers/upload.controller';
+import { FileUpload } from './entities/FileUpload.entity';
 
 @Module({
   imports: [
     WorkspaceModule,
     MikroOrmModule.forRoot(config),
     MikroOrmModule.forFeature({
-      entities: [User, Workspace, WorkspaceMember, Invitation],
+      entities: [User, Workspace, WorkspaceMember, Invitation, FileUpload],
     }),
     JwtModule.registerAsync({
       global: true,
@@ -44,7 +47,12 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     ConfigModule.forRoot(),
     ClsModule.forRoot({ middleware: { mount: true } }),
   ],
-  controllers: [WorkspaceController, AppController, OnboardingController],
+  controllers: [
+    WorkspaceController,
+    AppController,
+    OnboardingController,
+    UploadController,
+  ],
   providers: [
     AppService,
     JwtStrategy,
@@ -54,6 +62,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     UserService,
     UserRegisteredListener,
     UserUpdatedListener,
+    UploadService,
   ],
 })
 export class AppModule {}

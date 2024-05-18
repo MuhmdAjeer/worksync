@@ -1,39 +1,39 @@
-# apiVersion: apps/v1
-# kind: Deployment
-# metadata:
-#   name: workspace-psql-depl
-# spec:
-#   replicas: 1
-#   selector:
-#     matchLabels:
-#       app: workspace-psql
-#   template:
-#     metadata:
-#       labels:
-#         app: workspace-psql
-#     spec:
-#       containers:
-#         - name: postgres
-#           image: postgres:latest
-#           ports:
-#             - containerPort: 5432
-#           env:
-#             - name: POSTGRES_DB
-#               value: workspace_db
-#             - name: POSTGRES_USER
-#               value: myuser
-#             - name: POSTGRES_PASSWORD
-#               value: mypassword
-# ---
-# apiVersion: v1
-# kind: Service
-# metadata:
-#   name: workspace-psql-srv
-# spec:
-#   selector:
-#     app: workspace-psql
-#   ports:
-#     - name: db
-#       protocol: TCP
-#       port: 5432
-#       targetPort: 5432
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: workspace-psql-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: workspace-psql
+  template:
+    metadata:
+      labels:
+        app: workspace-psql
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:latest
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: workspace_db
+            - name: POSTGRES_USER
+              value: myuser
+            - name: POSTGRES_PASSWORD
+              value: mypassword
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: workspace-psql-srv
+spec:
+  selector:
+    app: workspace-psql
+  ports:
+    - name: db
+      protocol: TCP
+      port: 5432
+      targetPort: 5432

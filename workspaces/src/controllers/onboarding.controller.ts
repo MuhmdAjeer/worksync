@@ -1,20 +1,16 @@
-import { Body, Controller, Logger, Post, Req, UseGuards } from '@nestjs/common';
-import { Request } from 'express';
+import { Body, Controller, Logger, Post, UseGuards } from '@nestjs/common';
 import { OnboardDto } from 'src/dtos/CreateWorkspaceDto';
 import { JwtAuthGuard } from 'src/guards/jwt-auth.guard';
-// import { JwtAuthGuard } from '@worksyncplus/common';
 import { OnboardingService } from 'src/services/onboarding.service';
 @Controller('onboarding')
 export class OnboardingController {
   constructor(private onboardingSvc: OnboardingService) {}
 
-  private readonly logger = new Logger('auth controller');
+  private readonly logger = new Logger('onboarding controller');
 
   @UseGuards(JwtAuthGuard)
   @Post('/')
-  async onboardUser(@Req() request: Request, @Body() onboardDto: OnboardDto) {
-    this.logger.log(request.cookies);
-    // return request;
-    // return await this.onboardingSvc.onboardUser(onboardDto);
+  async onboardUser(@Body() onboardDto: OnboardDto) {
+    return await this.onboardingSvc.onboardUser(onboardDto);
   }
 }

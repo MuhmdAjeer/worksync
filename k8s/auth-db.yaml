@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: psql-db-depl 
+  name: auth-db-depl 
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: psql-db 
+      app: auth-db 
   template:
     metadata:
       labels:
-        app: psql-db
+        app: auth-db
     spec:
       containers:
         - name: postgres
@@ -19,7 +19,7 @@ spec:
             - containerPort: 5432
           env:
             - name: POSTGRES_DB
-              value: worksync_db
+              value: auth_db
             - name: POSTGRES_USER
               value: myuser
             - name: POSTGRES_PASSWORD
@@ -28,10 +28,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: psql-db-srv
+  name: auth-db-srv
 spec:
   selector:
-    app: psql-db 
+    app: auth-db 
   ports:
     - name: db
       protocol: TCP

@@ -5,6 +5,8 @@ import { SendOTPDto } from "@/generated/dto/send-otpdto";
 import { OnboardDto } from "@/generated/dto/onboard-dto";
 import { User } from "next-auth";
 import { getSession } from "next-auth/react";
+import { FileUploadRequestDto } from "@/generated/dto/file-upload-request-dto";
+import { FileUploadResponseDto } from "@/generated/FileUploadResponseDto";
 
 export interface ApiAuthProvider {
   getToken: () => Promise<string | undefined>;
@@ -65,6 +67,29 @@ export class ApiClient {
   }
   public async getCurrentUser(): Promise<User> {
     return (await this.http.get(`/api/auth/currentUser`)).data;
+  }
+  private async getUploadParams(
+    requestBody: FileUploadRequestDto
+  ): Promise<FileUploadResponseDto> {
+    return (await this.http.post("/api/workspace/upload", requestBody)).data;
+  }
+
+  public async uploadFile(
+    fileDetails: FileUploadRequestDto,
+    file: File
+  ): Promise<string> {
+    const params = await this.getUploadParams(fileDetails);
+    const formData = new FormData();
+    for (const k of Object.keys(params.fields)) {
+      formData.append(k, (params.fields as any)[k]);
+    }
+    formData.append("file", file);
+    await axios.post(params.url, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
+    return params.public_url;
   }
 }
 const client = new ApiClient(undefined, {

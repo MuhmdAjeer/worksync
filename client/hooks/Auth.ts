@@ -39,28 +39,21 @@ export const useLogin = (): UseMutationResult<
   return useMutation(mutationOptions);
 };
 export const useRegisterUser = (): UseMutationResult<
-  void,
+  CreateUserDto,
   Error,
   CreateUserDto,
   unknown
 > => {
-  const mutationOptions: UseMutationOptions<
-    void,
-    Error,
-    CreateUserDto,
-    unknown
-  > = {
+  return useMutation({
     mutationFn: async (userDto: CreateUserDto) => {
-      await ApiClient.registerUser(userDto);
+      return await ApiClient.registerUser(userDto);
     },
     onError: (error) => {
       if (isDuplicateError(error)) {
         toast.error("User Already exists");
       }
     },
-  };
-
-  return useMutation(mutationOptions);
+  });
 };
 
 export const useVerifyCode = (): UseMutationResult<

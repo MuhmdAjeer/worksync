@@ -29,6 +29,9 @@ export class User {
   @Property({ default: null, nullable: true })
   verified_at?: Date;
 
+  @Property({ default: null, nullable: true })
+  profile_picture?: string;
+
   @BeforeCreate()
   async hashPassword() {
     if (this.password) {
@@ -44,12 +47,14 @@ export class User {
     google_id?: string;
     password: string;
     verified_at?: Date;
+    profile_picture?: string;
   }) {
     this.username = user.username;
     this.email = user.email;
     this.password = user.password;
     this.google_id = user.google_id;
     this.verified_at = user.verified_at;
+    this.profile_picture = user.profile_picture;
   }
 }
 

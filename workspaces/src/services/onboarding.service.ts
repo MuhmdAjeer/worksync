@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User, UserRepo } from 'src/entities/User.entity';
 import { OnboardDto } from 'src/dtos/CreateWorkspaceDto';
 import { Workspace, WorkspaceRepo } from 'src/entities/Workspace.entity';
@@ -14,7 +14,6 @@ export class OnboardingService {
     private clsService: ClsService,
     private userRepo: UserRepo,
   ) {}
-  private readonly logger = new Logger('workspace svc');
 
   async onboardUser(onboardDto: OnboardDto) {
     const user = this.clsService.get<User>('reqUser');
@@ -25,6 +24,7 @@ export class OnboardingService {
     });
 
     await this.workspaceRepo.getEntityManager().persistAndFlush(workspace);
+
     for (const member of onboardDto.members) {
       if (member.email === user.email) return;
       const invitation = new Invitation({
@@ -42,8 +42,13 @@ export class OnboardingService {
       });
       await this.invitationRepo.getEntityManager().persistAndFlush(invitation);
     }
-    this.userRepo.assign(user, { username: onboardDto.user_name });
+
+    this.userRepo.assign(user, {
+      username: onboardDto.user_name,
+      profile_picture: onboardDto.profile_picture,
+    });
     await this.userRepo.getEntityManager().persistAndFlush(user);
+
     return workspace;
   }
 }

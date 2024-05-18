@@ -5,9 +5,9 @@ import { SeedManager } from '@mikro-orm/seeder';
 
 export default defineConfig<PostgreSqlDriver>({
   allowGlobalContext: true,
-  dbName: 'worksync_db',
+  dbName: 'workspace_db',
   driver: PostgreSqlDriver,
-  host: 'psql-db-srv',
+  host: 'workspace-psql-srv',
   port: 5432,
   user: 'myuser',
   password: 'mypassword',

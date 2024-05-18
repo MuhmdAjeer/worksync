@@ -49,10 +49,10 @@ async function bootstrap() {
     new UniqueConstraintExceptionFilter(),
   );
 
-  // const userRegisteredListener = app.get(UserRegisteredListener);
-  // const userUpdatedListener = app.get(UserUpdatedListener);
-  // userUpdatedListener.listen();
-  // userRegisteredListener.listen();
+  const userRegisteredListener = app.get(UserRegisteredListener);
+  const userUpdatedListener = app.get(UserUpdatedListener);
+  userUpdatedListener.listen();
+  userRegisteredListener.listen();
 
   process.on('SIGINT', () => {
     natsWrapper.client.close();

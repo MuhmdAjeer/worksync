@@ -1,23 +1,31 @@
+import { File } from "buffer";
 import Image from "next/image";
 import React, { ChangeEvent, useState } from "react";
 
 interface Iprops {
   placeHolder?: string;
+  file?: globalThis.File;
+  setFile: (value: React.SetStateAction<globalThis.File | undefined>) => void;
 }
 
-const AvatarInput = ({ placeHolder = "Select Image" }: Iprops) => {
-  const [avatar, setAvatar] = useState<string>("");
+const AvatarInput = ({
+  placeHolder = "Select Image",
+  file,
+  setFile,
+}: Iprops) => {
+  const [img, setImg] = useState("");
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event?.target.files?.[0];
     if (!file) {
       return;
     }
+    setFile(file);
     const reader = new FileReader();
 
     reader.onloadend = () => {
       if (reader.result) {
-        setAvatar(reader.result.toString());
+        setImg(reader.result.toString());
       }
     };
 
@@ -35,9 +43,9 @@ const AvatarInput = ({ placeHolder = "Select Image" }: Iprops) => {
           accept="image/*"
           onChange={handleChange}
         />
-        {avatar ? (
+        {img ? (
           <Image
-            src={avatar}
+            src={img}
             alt="Avatar"
             width={100}
             height={100}

@@ -13,16 +13,12 @@ export const UseOnboardUser = (): UseMutationResult<
   OnboardDto,
   unknown
 > => {
-  const mutationOptions: UseMutationOptions<void, Error, OnboardDto, unknown> =
-    {
-      mutationFn: async (userDto: OnboardDto) => {
-        await ApiClient.onboardUser(userDto);
-      },
-      onError: (error) => {
-        alert('hii')
-        toast.error("Error");
-      },
-    };
-
-  return useMutation(mutationOptions);
+  return useMutation({
+    mutationFn: async (userDto: OnboardDto) => {
+      return await ApiClient.onboardUser(userDto);
+    },
+    onError: (error) => {
+      toast.error("Error");
+    },
+  });
 };
