@@ -39,13 +39,11 @@ const Login: NextPageWithLayout = () => {
       password: "",
     },
   });
-  const session = useSession();
-  console.log(session.data);
+  const router = useRouter();
 
   return (
     <div className="relative z-10 mt-[calc(30vh)] h-fit w-full max-w-md overflow-hidden border-y border-gray-200 sm:rounded-2xl sm:border sm:shadow-xl">
       <Card>
-        {session.data?.access_token}
         <form
           onSubmit={async (e) => {
             e.preventDefault();
@@ -53,6 +51,12 @@ const Login: NextPageWithLayout = () => {
               redirect: false,
               email: form.getValues("email"),
               password: form.getValues("password"),
+            }).then((response) => {
+              if (response?.ok) {
+                router.push("/onboarding");
+                return;
+              }
+              toast.error("Invalid credentials");
             });
           }}
         >
@@ -62,14 +66,6 @@ const Login: NextPageWithLayout = () => {
             <CardDescription>Stay connected to your team!</CardDescription>
           </CardHeader>
           <CardContent>
-            {/* <label>
-              Email
-              <input name="email" type="email" />
-            </label>
-            <label>
-              Password
-              <input name="password" type="password" />
-            </label> */}
             <div>
               <Controller
                 control={form.control}
@@ -106,17 +102,7 @@ const Login: NextPageWithLayout = () => {
             </div>
           </CardContent>
           <CardFooter className="flex flex-col gap-2">
-            <Button
-              type="submit"
-              // onClick={() => {
-              //   void form
-              //     .handleSubmit(loginHandler)()
-              //     .then(() => {
-              //       router.push("/onboarding");
-              //     });
-              // }}
-              className="w-full"
-            >
+            <Button type="submit" className="w-full">
               Submit
             </Button>{" "}
             <div
