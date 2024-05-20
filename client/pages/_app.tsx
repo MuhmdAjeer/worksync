@@ -1,30 +1,46 @@
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import "@/styles/globals.css";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { NextPage } from "next";
 import type { AppProps } from "next/app";
 import { ReactElement, ReactNode } from "react";
 import { SessionProvider } from "next-auth/react";
 import ReactQueryProvider from "@/providers/ReactQuery";
 
+import { Inter } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+});
+
 export default function App({
   Component,
   pageProps: { session, ...pageProps },
 }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => page);
-  return getLayout(
-    <ReactQueryProvider>
+  return (
+    <main
+      className={cn(
+        "min-h-screen bg-background font-sans antialiased",
+        inter.variable
+      )}
+    >
       <SessionProvider session={session}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <Component {...pageProps} />
-        </ThemeProvider>
+        {getLayout(
+          <ReactQueryProvider>
+            <ThemeProvider
+              attribute="class"
+              defaultTheme="light"
+              enableSystem
+              disableTransitionOnChange
+            >
+              <Component {...pageProps} />
+            </ThemeProvider>
+          </ReactQueryProvider>
+        )}
       </SessionProvider>
-    </ReactQueryProvider>
+    </main>
   );
 }
 

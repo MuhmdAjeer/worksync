@@ -1,6 +1,7 @@
 import Sidebar from "@/components/Sidebar";
 import Typography from "@/components/ui/Typography";
 import { Card } from "@/components/ui/card";
+import { SessionProvider, getSession, useSession } from "next-auth/react";
 import React from "react";
 
 const OnboardingLayout = ({
@@ -8,6 +9,7 @@ const OnboardingLayout = ({
 }: Readonly<{
   children: React.ReactNode;
 }>) => {
+  const session = useSession();
   return (
     <div className="p-20 h-screen">
       <div className="flex items-center w-full justify-between">
@@ -15,7 +17,7 @@ const OnboardingLayout = ({
           Worksync+
         </Typography>
         <Typography variant="h4" affects="small">
-          muhdajeer@gmail.com
+          {session.data?.user.email}
         </Typography>
       </div>
       <Card className="mx-20 mt-8 h-full border border-black border-opacity-20 rounded-lg shadow-2xl">

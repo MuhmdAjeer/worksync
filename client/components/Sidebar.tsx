@@ -1,140 +1,80 @@
 import Image from "next/image";
 import React from "react";
+import { BarChart2, BellDotIcon, Briefcase, Crown, Home } from "lucide-react";
+import Link from "next/link";
+import { cn } from "@/lib/utils";
+import { useRouter } from "next/router";
+import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+
+export type Props = {
+  className?: string;
+  width?: string | number;
+  height?: string | number;
+  color?: string;
+};
+
+export const SIDEBAR_MENU_ITEMS: {
+  key: string;
+  label: string;
+  href: string;
+  highlight: (pathname: string, baseUrl: string) => boolean;
+  Icon: React.FC<Props>;
+}[] = [
+  {
+    key: "home",
+    label: "Home",
+    href: ``,
+    highlight: (pathname: string, baseUrl: string) => pathname === `${baseUrl}`,
+    Icon: Home,
+  },
+  {
+    key: "projects",
+    label: "Projects",
+    href: `/projects`,
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname.includes(`${baseUrl}/projects`),
+    Icon: Briefcase,
+  },
+  {
+    key: "issues",
+    label: "Issues",
+    href: `/issues`,
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname.includes(`${baseUrl}/issues`),
+    Icon: QuestionMarkCircledIcon,
+  },
+  {
+    key: "notifications",
+    label: "Notifications",
+    href: `/notifications`,
+    highlight: (pathname: string, baseUrl: string) =>
+      pathname.includes(`${baseUrl}/notifications`),
+    Icon: BellDotIcon,
+  },
+];
+
+const workspaceSlug = "fdsfds";
 
 const Sidebar = () => {
+  const router = useRouter();
   return (
-    <div className="flex h-full flex-col justify-between border-e bg-white">
-      <div className="px-4 py-6 w-full">
-        <span className="grid h-10 w-32 place-content-center rounded-lg bg-gray-100 text-xs text-gray-600">
-          Logo
-        </span>
-
-        <ul className="mt-6 space-y-1 w-full">
-          <li>
-            <a
-              href="#"
-              className="block rounded-lg bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700"
+    <div className="w-full cursor-pointer space-y-2 p-4">
+      {SIDEBAR_MENU_ITEMS.map((link) => (
+        <Link key={link.key} href={`/${workspaceSlug}${link.href}`}>
+          <span className="my-1 block w-full">
+            <div
+              className={`group flex w-full items-center gap-2.5 rounded-md px-3 py-2 text-sm font-medium outline-none ${
+                link.highlight(router.asPath, `/${workspaceSlug}`)
+                  ? "bg-custom-primary-dark/10 text-custom-primary-dark"
+                  : "text-foreground hover:bg-foreground/5 focus:bg-foreground/50"
+              }  `}
             >
-              General
-            </a>
-          </li>
-
-          <li>
-            <details className="group [&_summary::-webkit-details-marker]:hidden">
-              <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                <span className="text-sm font-medium"> Teams </span>
-
-                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <ul className="mt-2 space-y-1 px-4">
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Banned Users
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Calendar
-                  </a>
-                </li>
-              </ul>
-            </details>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            >
-              Billing
-            </a>
-          </li>
-
-          <li>
-            <a
-              href="#"
-              className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-            >
-              Invoices
-            </a>
-          </li>
-
-          <li>
-            <details className="group [&_summary::-webkit-details-marker]:hidden">
-              <summary className="flex cursor-pointer items-center justify-between rounded-lg px-4 py-2 text-gray-500 hover:bg-gray-100 hover:text-gray-700">
-                <span className="text-sm font-medium"> Account </span>
-
-                <span className="shrink-0 transition duration-300 group-open:-rotate-180">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-5 w-5"
-                    viewBox="0 0 20 20"
-                    fill="currentColor"
-                  >
-                    <path
-                      fillRule="evenodd"
-                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                      clipRule="evenodd"
-                    />
-                  </svg>
-                </span>
-              </summary>
-
-              <ul className="mt-2 space-y-1 px-4">
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Details
-                  </a>
-                </li>
-
-                <li>
-                  <a
-                    href="#"
-                    className="block rounded-lg px-4 py-2 text-sm font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-700"
-                  >
-                    Security
-                  </a>
-                </li>
-
-                <li>
-                  <form action="#">
-                    <button
-                      type="submit"
-                      className="w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-                    >
-                      Logout
-                    </button>
-                  </form>
-                </li>
-              </ul>
-            </details>
-          </li>
-        </ul>
-      </div>
+              {<link.Icon className="h-4 w-4" />}
+              <p className="leading-5">{link.label}</p>
+            </div>
+          </span>
+        </Link>
+      ))}
     </div>
   );
 };

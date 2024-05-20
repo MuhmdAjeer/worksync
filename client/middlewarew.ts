@@ -13,15 +13,19 @@ import type { NextRequest } from "next/server";
 //   }
 // }
 
-import { withAuth } from "next-auth/middleware";
+// import { withAuth } from "next-auth/middleware";
 
-export default withAuth({
-  // Matches the pages config in `[...nextauth]`
-  pages: {
-    signIn: "/auth/login",
-    error: "/error",
-  },
-});
+// export default withAuth({
+//   // Matches the pages config in `[...nextauth]`
+//   pages: {
+//     signIn: "/auth/login",
+//     error: "/error",
+//   },
+// });
+
+export default function middleware() {
+  return true;
+}
 
 export const config = {
   matcher: "/((?!api|_next/static|_next/image|favicon.ico).*)",
