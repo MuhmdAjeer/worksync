@@ -21,6 +21,16 @@ spec:
                 secretKeyRef:
                   name: jwtsecret
                   key: JWT_KEY
+        - name: MAIL_EMAIL
+          valueFrom:
+            secretKeyRef:
+              name: mail
+              key: MAIL_EMAIL
+        - name: MAIL_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: mail
+              key: MAIL_PASSWORD
           ports:
             - containerPort: 3000
               protocol: TCP
