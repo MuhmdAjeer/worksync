@@ -61,7 +61,7 @@ export class UploadService {
   }
 
   private generateFileKey(
-    userId: number,
+    userId: string,
     type: FileUploadType,
     fileName = '',
   ): string {

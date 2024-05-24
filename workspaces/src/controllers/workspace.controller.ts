@@ -11,7 +11,7 @@ export class WorkspaceController {
   @UseGuards(JwtAuthGuard)
   @Post('/')
   async createWorkspace(@Body() createWorkspaceDto: CreateWorkspaceDto) {
-    await this.workspaceService.create(createWorkspaceDto);
+    return await this.workspaceService.create(createWorkspaceDto);
   }
 
   @Get('/users')

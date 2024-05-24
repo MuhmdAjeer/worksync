@@ -2,17 +2,15 @@ import {
   BeforeCreate,
   Entity,
   EntityRepositoryType,
-  PrimaryKey,
   Property,
 } from '@mikro-orm/core';
 import { EntityRepository } from '@mikro-orm/postgresql';
 import * as bcrypt from 'bcrypt';
+import { Base } from './base.entity';
 
 @Entity({ repository: () => UserRepo, tableName: 'users' })
-export class User {
+export class User extends Base {
   [EntityRepositoryType]?: UserRepo;
-  @PrimaryKey()
-  id!: number;
 
   @Property({ nullable: true })
   username?: string;
@@ -41,20 +39,9 @@ export class User {
     }
   }
 
-  constructor(user: {
-    username?: string;
-    email: string;
-    google_id?: string;
-    password: string;
-    verified_at?: Date;
-    profile_picture?: string;
-  }) {
-    this.username = user.username;
-    this.email = user.email;
-    this.password = user.password;
-    this.google_id = user.google_id;
-    this.verified_at = user.verified_at;
-    this.profile_picture = user.profile_picture;
+  constructor(user: Partial<User>) {
+    super();
+    Object.assign(this, user);
   }
 }
 

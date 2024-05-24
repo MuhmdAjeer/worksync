@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class UserDto {
-  id: number;
+  id: string;
   username?: string;
   email: string;
   google_id?: string;

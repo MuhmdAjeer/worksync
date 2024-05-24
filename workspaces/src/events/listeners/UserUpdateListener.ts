@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   Listener,
   Subjects,
@@ -17,9 +17,16 @@ export class UserUpdatedListener extends Listener<UserUpdatedEvent> {
   constructor(private readonly userSvc: UserService) {
     super(natsWrapper.client);
   }
-
-  onMessage(data: UserRegisteredEvent['data'], msg: Message): void {
-    this.userSvc.update(data.user);
-    msg.ack();
+  private readonly logger = new Logger(Subjects.UserUpdate);
+  async onMessage(
+    data: UserRegisteredEvent['data'],
+    msg: Message,
+  ): Promise<void> {
+    try {
+      await this.userSvc.update(data.user);
+      msg.ack();
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }

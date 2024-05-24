@@ -23,6 +23,8 @@ import { JwtStrategy } from './strategies/jwt.strategy';
 import { UploadService } from './services/upload.service';
 import { UploadController } from './controllers/upload.controller';
 import { FileUpload } from './entities/FileUpload.entity';
+import { ProjectService } from './services/project.service';
+import { ProjectsController } from './controllers/project.controller';
 
 @Module({
   imports: [
@@ -52,9 +54,11 @@ import { FileUpload } from './entities/FileUpload.entity';
     AppController,
     OnboardingController,
     UploadController,
+    ProjectsController,
   ],
   providers: [
     AppService,
+    ProjectService,
     JwtStrategy,
     LocalStrategy,
     WorkspaceService,

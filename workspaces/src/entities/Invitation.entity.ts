@@ -16,7 +16,7 @@ export class Invitation {
   email: string;
 
   @Property()
-  workspace_id: number;
+  workspace_id: string;
 
   @Property({ default: false })
   is_accepted: boolean;
@@ -27,7 +27,7 @@ export class Invitation {
   constructor(invitation: {
     role: string;
     email: string;
-    workspace_id: number;
+    workspace_id: string;
   }) {
     this.email = invitation.email;
     this.workspace_id = invitation.workspace_id;

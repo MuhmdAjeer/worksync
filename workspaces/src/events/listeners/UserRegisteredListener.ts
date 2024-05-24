@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Listener, Subjects, UserRegisteredEvent } from '@worksyncplus/common';
 import { Message } from 'node-nats-streaming';
 import { UserService } from 'src/services/user.service';
@@ -13,8 +13,16 @@ export class UserRegisteredListener extends Listener<UserRegisteredEvent> {
     super(natsWrapper.client);
   }
 
-  onMessage(data: UserRegisteredEvent['data'], msg: Message): void {
-    this.userSvc.register(data.user);
-    msg.ack();
+  private readonly logger = new Logger('hi');
+  async onMessage(
+    data: UserRegisteredEvent['data'],
+    msg: Message,
+  ): Promise<void> {
+    try {
+      await this.userSvc.register(data.user);
+      msg.ack();
+    } catch (error) {
+      this.logger.error(error);
+    }
   }
 }

@@ -55,13 +55,13 @@ export class UserService {
     });
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     return await this.userRepo.findOne({ id });
   }
 }
 
 export interface JwtPayload {
-  id: number;
+  id: string;
   username?: string;
   email: string;
   google_id?: string;
