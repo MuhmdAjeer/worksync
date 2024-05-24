@@ -13,6 +13,10 @@ import InviteMemberInput, { Field } from "../InviteMemberInput";
 import { OnboardDto } from "@/generated/dto/onboard-dto";
 import { UseOnboardUser } from "@/hooks/Onboard";
 import ApiClient from "@/lib/apiClient";
+import { TypeEnum } from "@/generated/dto/file-upload-request-dto";
+import { useWorkspace } from "@/hooks/workspace";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const WORKSYNC_USE_OPTIONS = [
   "Project Managing",
@@ -42,8 +46,9 @@ const OnboardingForm = () => {
   });
   const [step, setStep] = useState(1);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const router = useRouter();
   const [avatar, setAvatar] = useState<globalThis.File>();
-  const onboardMutation = UseOnboardUser();
+  const { onboardUser } = useWorkspace();
   const [fields, setFields] = useState([
     { email: "", role: "" },
     { email: "", role: "" },
@@ -67,7 +72,7 @@ const OnboardingForm = () => {
         {
           file_name: avatar?.name,
           mimeType: avatar?.type,
-          type: "user_image",
+          type: TypeEnum.UserImage,
         },
         avatar
       );
@@ -78,7 +83,14 @@ const OnboardingForm = () => {
       use: selectedOption,
       profile_picture: profile_picture_url,
     };
-    onboardMutation.mutate(data);
+    await onboardUser(data)
+      .then((res) => {
+        toast.success("Onboarding success!");
+        router.push(`/${res.name}`);
+      })
+      .catch((err) => {
+        toast.error("Onboarding Failed! try again");
+      });
   };
 
   return (

@@ -7,6 +7,7 @@ import { User } from "next-auth";
 import { getSession } from "next-auth/react";
 import { FileUploadRequestDto } from "@/generated/dto/file-upload-request-dto";
 import { FileUploadResponseDto } from "@/generated/FileUploadResponseDto";
+import { Workspace } from "@/generated/dto/workspace";
 
 export interface ApiAuthProvider {
   getToken: () => Promise<string | undefined>;
@@ -62,7 +63,7 @@ export class ApiClient {
   public async resendCode(data: SendOTPDto): Promise<void> {
     return (await this.http.post(`/api/auth/verify/otp/send`, data)).data;
   }
-  public async onboardUser(data: OnboardDto): Promise<void> {
+  public async onboardUser(data: OnboardDto): Promise<Workspace> {
     return (await this.http.post(`/api/workspace/onboarding`, data)).data;
   }
   public async getCurrentUser(): Promise<User> {

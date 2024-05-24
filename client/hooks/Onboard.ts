@@ -1,4 +1,5 @@
 import { OnboardDto } from "@/generated/dto/onboard-dto";
+import { Workspace } from "@/generated/dto/workspace";
 import ApiClient from "@/lib/apiClient";
 import {
   UseMutationOptions,
@@ -8,7 +9,7 @@ import {
 import { toast } from "sonner";
 
 export const UseOnboardUser = (): UseMutationResult<
-  void,
+  Workspace,
   Error,
   OnboardDto,
   unknown

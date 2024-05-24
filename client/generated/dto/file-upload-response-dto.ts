@@ -17,35 +17,26 @@
 /**
  * 
  * @export
- * @interface FileUploadRequestDto
+ * @interface FileUploadResponseDto
  */
-export interface FileUploadRequestDto {
+export interface FileUploadResponseDto {
     /**
      * 
      * @type {string}
-     * @memberof FileUploadRequestDto
+     * @memberof FileUploadResponseDto
      */
-    'type': TypeEnum;
+    'url': string;
+    /**
+     * 
+     * @type {object}
+     * @memberof FileUploadResponseDto
+     */
+    'fields': object;
     /**
      * 
      * @type {string}
-     * @memberof FileUploadRequestDto
+     * @memberof FileUploadResponseDto
      */
-    'file_name': string;
-    /**
-     * 
-     * @type {string}
-     * @memberof FileUploadRequestDto
-     */
-    'mimeType'?: string;
+    'public_url': string;
 }
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum TypeEnum {
-    UserImage = 'user_image'
-}
-
 

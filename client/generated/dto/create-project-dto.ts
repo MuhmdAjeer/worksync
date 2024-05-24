@@ -17,35 +17,32 @@
 /**
  * 
  * @export
- * @interface FileUploadRequestDto
+ * @interface CreateProjectDto
  */
-export interface FileUploadRequestDto {
+export interface CreateProjectDto {
     /**
      * 
      * @type {string}
-     * @memberof FileUploadRequestDto
+     * @memberof CreateProjectDto
      */
-    'type': TypeEnum;
+    'name': string;
     /**
      * 
      * @type {string}
-     * @memberof FileUploadRequestDto
+     * @memberof CreateProjectDto
      */
-    'file_name': string;
+    'description': string;
     /**
      * 
      * @type {string}
-     * @memberof FileUploadRequestDto
+     * @memberof CreateProjectDto
      */
-    'mimeType'?: string;
+    'custom_id': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof CreateProjectDto
+     */
+    'workspace_id': string;
 }
-
-/**
-    * @export
-    * @enum {string}
-    */
-export enum TypeEnum {
-    UserImage = 'user_image'
-}
-
 

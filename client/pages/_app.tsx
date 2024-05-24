@@ -8,6 +8,7 @@ import ReactQueryProvider from "@/providers/ReactQuery";
 
 import { Inter } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { StoreProvider } from "@/lib/store-context";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -27,18 +28,20 @@ export default function App({
       )}
     >
       <SessionProvider session={session}>
-        {getLayout(
-          <ReactQueryProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Component {...pageProps} />
-            </ThemeProvider>
-          </ReactQueryProvider>
-        )}
+        <StoreProvider {...pageProps} >
+          {getLayout(
+            <ReactQueryProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="light"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Component {...pageProps} />
+              </ThemeProvider>
+            </ReactQueryProvider>
+          )}
+        </StoreProvider>
       </SessionProvider>
     </main>
   );
