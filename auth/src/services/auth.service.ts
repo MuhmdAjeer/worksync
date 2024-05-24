@@ -41,7 +41,7 @@ export class AuthService {
     await this.userRepo.getEntityManager().persistAndFlush(user);
     new UserRegisteredPublisher(natsWrapper.client).publish({
       user,
-      version: user.id,
+      version: 1,
     });
 
     return user;
@@ -105,18 +105,18 @@ export class AuthService {
     await this.userRepo.getEntityManager().persistAndFlush(user);
     new UserUpdatedPublisher(natsWrapper.client).publish({
       user,
-      version: user.id,
+      version: 1,
     });
     return;
   }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: string): Promise<User> {
     return await this.userRepo.findOne({ id });
   }
 }
 
 export interface JwtPayload {
-  id: number;
+  id: string;
   username?: string;
   email: string;
   google_id?: string;

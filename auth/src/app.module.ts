@@ -13,8 +13,6 @@ import { LocalStrategy } from './strategies/local.strategy';
 import { AuthService } from './services/auth.service';
 import { ClsModule } from 'nestjs-cls';
 import { OTP } from './entities/Otp.entity';
-import { MailerModule } from '@nestjs-modules/mailer';
-import { MailService } from './services/mail.service';
 
 @Module({
   imports: [
@@ -22,23 +20,6 @@ import { MailService } from './services/mail.service';
     MikroOrmModule.forRoot(config),
     MikroOrmModule.forFeature({ entities: [User, OTP] }),
     NatsModule,
-    MailerModule.forRoot({
-      transport: {
-        host: 'smtp.gmail.com',
-        port: 465,
-        secure: true,
-        auth: {
-          user: 'muhdajeer@gmail.com',
-          pass: 'gtxibavavfaxhnrm',
-        },
-      },
-      defaults: {
-        from: {
-          name: 'Worksync',
-          address: 'Worksync.dev',
-        },
-      },
-    }),
     JwtModule.registerAsync({
       global: true,
       useFactory: (configService: ConfigService) => {
@@ -56,6 +37,6 @@ import { MailService } from './services/mail.service';
     ClsModule.forRoot({ middleware: { mount: true } }),
   ],
   controllers: [AppController],
-  providers: [AppService, JwtStrategy, LocalStrategy, AuthService, MailService],
+  providers: [AppService, JwtStrategy, LocalStrategy, AuthService],
 })
 export class AppModule {}
