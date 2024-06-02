@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
@@ -13,21 +12,16 @@ import { Separator } from "@/components/ui/separator";
 import { CreateUserDto } from "@/generated/dto/create-user-dto";
 import { useRegisterUser } from "@/hooks/Auth";
 import { GitHubLogoIcon } from "@radix-ui/react-icons";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
-import https from "https";
 import Link from "next/link";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { toast } from "sonner";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/schema/Auth";
 import { useRouter } from "next/navigation";
-import { ApiError } from "next/dist/server/api-utils";
 import AuthLayout from "@/components/layouts/AuthLayout";
 import { NextPageWithLayout } from "../_app";
 
 const Register: NextPageWithLayout = () => {
-  const { mutate, error, isError } = useRegisterUser();
+  const { mutate } = useRegisterUser();
   const router = useRouter();
   const form = useForm<CreateUserDto>({
     resolver: zodResolver(registerSchema),
@@ -37,7 +31,6 @@ const Register: NextPageWithLayout = () => {
     },
   });
   const registerHandler: SubmitHandler<CreateUserDto> = (data) => {
-    console.log("fdsadsf");
 
     mutate(data, {
       onSuccess: () => {

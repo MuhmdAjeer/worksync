@@ -1,9 +1,11 @@
-import Sidebar from "@/components/Sidebar";
+import SideBarProjects from "@/components/sidebar/SideBarProjects";
+import Sidebar from "@/components/sidebar/Sidebar";
 import SidebarQuickAction from "@/components/workspace/SidebarQuickAction";
 import WorkspaceSidebarDropdown from "@/components/workspace/sidebar-dropdown";
+import { observer } from "mobx-react";
 import { useRef } from "react";
 
-export const AppSideBar = () => {
+export const AppSideBar = observer(() => {
   const ref = useRef<HTMLDivElement>(null);
   const sidebarCollapsed = true;
   return (
@@ -21,6 +23,7 @@ export const AppSideBar = () => {
         <WorkspaceSidebarDropdown />
         <SidebarQuickAction />
         <Sidebar />
+        <SideBarProjects />
         {/* <WorkspaceSidebarDropdown />
         <WorkspaceSidebarQuickAction />
         <WorkspaceSidebarMenu />
@@ -29,4 +32,4 @@ export const AppSideBar = () => {
       </div>
     </div>
   );
-};
+});

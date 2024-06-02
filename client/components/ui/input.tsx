@@ -12,7 +12,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, ...props }, ref) => {
     return (
-      <>
+      <div>
         {props.label && <Label htmlFor={props.name}>{props.label}</Label>}
         <input
           type={type}
@@ -28,7 +28,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             {props.message}
           </Typography>
         )}
-      </>
+      </div>
     );
   }
 );

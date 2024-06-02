@@ -17,6 +17,7 @@ import { TypeEnum } from "@/generated/dto/file-upload-request-dto";
 import { useWorkspace } from "@/hooks/workspace";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
+import { observer } from "mobx-react";
 
 const WORKSYNC_USE_OPTIONS = [
   "Project Managing",
@@ -40,7 +41,7 @@ const WORKSYNC_USE_OPTIONS = [
   "Product Development",
 ];
 
-const OnboardingForm = () => {
+const OnboardingForm = observer(() => {
   const form = useForm<OnboardDto>({
     resolver: zodResolver(onboardingSchema),
   });
@@ -89,6 +90,7 @@ const OnboardingForm = () => {
         router.push(`/${res.name}`);
       })
       .catch((err) => {
+        console.log(err);
         toast.error("Onboarding Failed! try again");
       });
   };
@@ -253,6 +255,6 @@ const OnboardingForm = () => {
       )}
     </div>
   );
-};
+});
 
 export default OnboardingForm;

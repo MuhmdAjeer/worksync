@@ -8,6 +8,10 @@ export class WorkspaceService extends APIService {
   }
 
   public async onboardUser(data: OnboardDto): Promise<Workspace> {
-    return (await this.post(`/api/workspace/onboarding`, data)).data;
+    return this.post(`/onboarding`, data).then((response) => response.data);
+  }
+
+  public async fetchMyWorkspaces(): Promise<Workspace[]> {
+    return this.get("/workspace/me").then((response) => response.data);
   }
 }

@@ -8,7 +8,7 @@ export abstract class APIService {
   protected baseURL: string;
   private axiosInstance: AxiosInstance;
 
-  constructor(baseURL: string = "http://worksync.test/") {
+  constructor(baseURL: string = "http://localhost:5000/api") {
     this.baseURL = baseURL;
     this.axiosInstance = axios.create({
       baseURL,

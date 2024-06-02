@@ -7,7 +7,7 @@
             "typescript": {
                 "generatorName": "typescript-axios",
                 "output": "#{cwd}/generated/",
-                "inputSpec": "./api.json",
+                "inputSpec": "http://localhost:5000/api-json",
                 "globalProperty": "models",
                 "skipValidateSpec": true,
                 "apiPackage": "api",

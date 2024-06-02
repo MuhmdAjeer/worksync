@@ -13,77 +13,77 @@
  */
 
 
-// May contain unused imports in some cases
-// @ts-ignore
-import { User } from './user';
-// May contain unused imports in some cases
-// @ts-ignore
-import { Workspace } from './workspace';
 
 /**
  * 
  * @export
- * @interface Project
+ * @interface User
  */
-export interface Project {
+export interface User {
     /**
      * 
      * @type {string}
-     * @memberof Project
+     * @memberof User
      */
-    'name': string;
+    'username'?: string;
     /**
      * 
      * @type {string}
-     * @memberof Project
+     * @memberof User
      */
-    'custom_id': string;
+    'email': string;
     /**
      * 
      * @type {string}
-     * @memberof Project
+     * @memberof User
      */
-    'description': string;
-    /**
-     * 
-     * @type {Workspace}
-     * @memberof Project
-     */
-    'workspace': Workspace;
-    /**
-     * 
-     * @type {User}
-     * @memberof Project
-     */
-    'lead': User;
+    'google_id'?: string;
     /**
      * 
      * @type {string}
-     * @memberof Project
+     * @memberof User
+     */
+    'password': string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'verified_at'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
+     */
+    'profile_picture'?: string;
+    /**
+     * 
+     * @type {string}
+     * @memberof User
      */
     'id': string;
     /**
      * 
      * @type {object}
-     * @memberof Project
+     * @memberof User
      */
     'created_at': object;
     /**
      * 
      * @type {object}
-     * @memberof Project
+     * @memberof User
      */
     'updated_at': object;
     /**
      * 
      * @type {string}
-     * @memberof Project
+     * @memberof User
      */
     'deleted_at': string | null;
     /**
      * 
      * @type {number}
-     * @memberof Project
+     * @memberof User
      */
     'version': number;
 }

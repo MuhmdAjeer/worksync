@@ -1,4 +1,4 @@
-import Sidebar from "@/components/Sidebar";
+import Sidebar from "@/components/sidebar/Sidebar";
 import Typography from "@/components/ui/Typography";
 import { Card } from "@/components/ui/card";
 import { SessionProvider, getSession, useSession } from "next-auth/react";

@@ -22,7 +22,7 @@
 export interface VerifyOTPDto {
     /**
      * 
-     * @type {number}
+     * @type {string}
      * @memberof VerifyOTPDto
      */
     'code': string;

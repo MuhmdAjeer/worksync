@@ -5,6 +5,8 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { QuestionMarkCircledIcon } from "@radix-ui/react-icons";
+import { useAppRouter } from "@/hooks/router";
+import { observer } from "mobx-react";
 
 export type Props = {
   className?: string;
@@ -53,9 +55,8 @@ export const SIDEBAR_MENU_ITEMS: {
   },
 ];
 
-const workspaceSlug = "fdsfds";
-
-const Sidebar = () => {
+const Sidebar = observer(() => {
+  const { workspaceSlug } = useAppRouter();
   const router = useRouter();
   return (
     <div className="w-full cursor-pointer space-y-2 p-4">
@@ -77,6 +78,6 @@ const Sidebar = () => {
       ))}
     </div>
   );
-};
+});
 
 export default Sidebar;

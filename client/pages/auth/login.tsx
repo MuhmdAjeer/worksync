@@ -12,24 +12,17 @@ import {
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { CreateUserDto } from "@/generated/dto/create-user-dto";
-import { useLogin } from "@/hooks/Auth";
 import { loginSchema } from "@/lib/schema/Auth";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  GitHubLogoIcon,
-  IconJarLogoIcon,
-  ReloadIcon,
-} from "@radix-ui/react-icons";
+import { GitHubLogoIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ReactElement, useEffect } from "react";
-import { useFormState, useFormStatus } from "react-dom";
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
+
+import { Controller, useForm } from "react-hook-form";
 import { toast } from "sonner";
-import credentials from "next-auth/providers/credentials";
 import { NextPageWithLayout } from "../_app";
 import AuthLayout from "@/components/layouts/AuthLayout";
-import { SignInAuthorizationParams, signIn, useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 const Login: NextPageWithLayout = () => {
   const form = useForm<CreateUserDto>({

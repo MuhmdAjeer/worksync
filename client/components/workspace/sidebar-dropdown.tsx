@@ -12,36 +12,42 @@ import { Button } from "../ui/button";
 import { signOut, useSession } from "next-auth/react";
 import Typography from "../ui/Typography";
 import { LogOut, PlusIcon, PlusSquare, Settings, User } from "lucide-react";
+import { useWorkspace } from "@/hooks/workspace";
+import Link from "next/link";
+import { observer } from "mobx-react";
 
-const MOCK_WORKSPACES = ["worksync", "clinook", "uphabit"];
-
-const WorkspaceSidebarDropdown = () => {
+const WorkspaceSidebarDropdown = observer(() => {
   const handleLogout = () => {
     signOut();
   };
   const session = useSession();
+  const { workspaces, currentWorkspace } = useWorkspace();
   return (
     <div className="flex justify-between gap-2 p-4 items-center">
       <DropdownMenu>
         <DropdownMenuTrigger className="flex p-1 rounded w-full hover:bg-slate-200 gap-2 items-center">
           <div className="bg-custom-primary-dark h-6 w-6 rounded flex items-center justify-center">
-            <span className="text-secondary text-xs ">W</span>
+            <span className="text-secondary text-xs ">
+              {currentWorkspace?.name.charAt(0).toUpperCase()}
+            </span>
           </div>
-          <Typography variant="h6">Worksync+</Typography>
+          <Typography variant="h6">{currentWorkspace?.name}</Typography>
         </DropdownMenuTrigger>
         <DropdownMenuContent className="ml-4" side="bottom">
           <DropdownMenuLabel className=" font-medium text-gray-500 text-xs">
             {session.data?.user.email}
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
-          {MOCK_WORKSPACES.map((workspace) => (
-            <DropdownMenuItem key={workspace} className="flex gap-2">
-              <div className="bg-custom-primary-dark h-5 w-5 rounded flex items-center justify-center">
-                <span className="text-secondary text-xs">
-                  {workspace.charAt(0).toUpperCase()}
-                </span>
-              </div>
-              <Typography variant="h6">{workspace}</Typography>
+          {Object.values(workspaces ?? {}).map((workspace) => (
+            <DropdownMenuItem key={workspace.id}>
+              <Link href={`/${workspace.name}`} className="flex gap-2">
+                <div className="bg-custom-primary-dark h-5 w-5 rounded flex items-center justify-center">
+                  <span className="text-secondary text-xs">
+                    {workspace.name.charAt(0).toUpperCase()}
+                  </span>
+                </div>
+                <Typography variant="h6">{workspace.name}</Typography>
+              </Link>
             </DropdownMenuItem>
           ))}
           <DropdownMenuSeparator />
@@ -101,6 +107,6 @@ const WorkspaceSidebarDropdown = () => {
       </DropdownMenu>
     </div>
   );
-};
+});
 
 export default WorkspaceSidebarDropdown;

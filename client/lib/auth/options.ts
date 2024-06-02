@@ -36,11 +36,12 @@ export const authOptions: NextAuthOptions = {
             return null;
           }
           // SEND USER DETAILS FROM SERVER
+          console.log({ data });
           return {
             email: credentials?.email,
-            id: "43243",
-            image: "43243",
-            name: "fsdfsdas",
+            id: data.id,
+            image: "fds",
+            name: data.name,
             access_token: data.access_token,
           };
         } catch (error) {
@@ -57,7 +58,14 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, token, user }) {
       session.access_token = token.access_token;
-      return session;
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          name: token.name,
+        },
+      };
     },
     async jwt({ token, user }) {
       if (user) {

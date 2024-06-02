@@ -14,11 +14,15 @@ export interface ApiAuthProvider {
   onAuthError: (err: Error) => void | Promise<void>;
 }
 
+export interface LoginResponse extends User {
+  access_token: string;
+}
+
 export class ApiClient {
   private readonly http: AxiosInstance;
 
   constructor(
-    private readonly baseURL = "http://worksync.test/",
+    private readonly baseURL = "http://localhost:5000/api",
     private readonly authProvider: ApiAuthProvider
   ) {
     this.http = axios.create({
@@ -48,31 +52,30 @@ export class ApiClient {
   }
 
   public async registerUser(userDto: CreateUserDto): Promise<CreateUserDto> {
-    return (await this.http.post<CreateUserDto>("/api/auth/register", userDto))
+    return (await this.http.post<CreateUserDto>("/auth/register", userDto))
       .data;
   }
 
   public async verifyToken(data: VerifyOTPDto): Promise<void> {
-    return (await this.http.post(`/api/auth/verify/otp`, data)).data;
+    return (await this.http.post(`/auth/verify/otp`, data)).data;
   }
-  public async login(data: CreateUserDto): Promise<{ access_token: string }> {
-    return (
-      await this.http.post<{ access_token: string }>(`/api/auth/login`, data)
-    ).data;
+  public async login(data: CreateUserDto): Promise<LoginResponse> {
+    return (await this.http.post<{ access_token: string }>(`/auth/login`, data))
+      .data;
   }
   public async resendCode(data: SendOTPDto): Promise<void> {
-    return (await this.http.post(`/api/auth/verify/otp/send`, data)).data;
+    return (await this.http.post(`/auth/verify/otp/send`, data)).data;
   }
   public async onboardUser(data: OnboardDto): Promise<Workspace> {
-    return (await this.http.post(`/api/workspace/onboarding`, data)).data;
+    return (await this.http.post(`/onboarding`, data)).data;
   }
   public async getCurrentUser(): Promise<User> {
-    return (await this.http.get(`/api/auth/currentUser`)).data;
+    return (await this.http.get(`/auth/currentUser`)).data;
   }
   private async getUploadParams(
     requestBody: FileUploadRequestDto
   ): Promise<FileUploadResponseDto> {
-    return (await this.http.post("/api/workspace/upload", requestBody)).data;
+    return (await this.http.post("/upload", requestBody)).data;
   }
 
   public async uploadFile(
